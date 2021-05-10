@@ -1,0 +1,44 @@
+{
+    "name": "loadersgl-terrain-loader-improvement",
+    "version": "1.0.0",
+    "description": "add terrain loader tesselector to loader.gl",
+    "main": "index.js",
+    "scripts": {
+        "webpack": "webpack",
+        "start": "webpack serve"
+    },
+    "license": "ISC",
+    "dependencies": {
+        "@deck.gl/mesh-layers": "^8.4.15",
+        "@hot-loader/react-dom": "^17.0.1",
+        "@loaders.gl/core": "^2.3.13",
+        "@loaders.gl/images": "^2.3.13",
+        "@loaders.gl/loader-utils": "^2.3.13",
+        "@mapbox/martini": "^0.2.0",
+        "@math.gl/culling": "^3.4.2",
+        "deck.gl": "^8.4.15",
+        "math.gl": "^3.4.2",
+        "react": "^16.13.1",
+        "react-dom": "^16.13.1",
+        "react-hot-loader": "^4.13.0",
+        "react-map-gl": "^6.1.13"
+    },
+    "devDependencies": {
+        "@babel/core": "^7.13.16",
+        "@babel/plugin-proposal-class-properties": "^7.13.0",
+        "@babel/preset-env": "^7.13.15",
+        "@babel/preset-react": "^7.13.13",
+        "babel-loader": "^8.2.2",
+        "css-loader": "^5.2.4",
+        "dotenv-webpack": "^7.0.2",
+        "file-loader": "^6.2.0",
+        "html-webpack-plugin": "^5.3.1",
+        "image-webpack-loader": "^7.0.1",
+        "path": "^0.12.7",
+        "source-map-loader": "^2.0.1",
+        "style-loader": "^2.0.0",
+        "webpack": "^5.35.0",
+        "webpack-cli": "^4.6.0",
+        "webpack-dev-server": "^3.11.2"
+    }
+}
