@@ -61,7 +61,7 @@ function getMeshAttributes(vertices, terrain, width, height, bounds) {
 	};
 }
 
-function getMartiniTileMesh(terrainImage, terrainOptions) {
+function getMesh(terrainImage, terrainOptions) {
 	if (terrainImage === null) {
 		return null;
 	}
@@ -70,10 +70,14 @@ function getMartiniTileMesh(terrainImage, terrainOptions) {
 	const data = terrainImage.data;
 	const width = terrainImage.width;
 	const height = terrainImage.height;
-	const gridSize = width + 1;
-
 	const terrain = getTerrain(data, width, height, elevationDecoder);
 
+	if (terrainOptions.tesselector === 'martini') return getMartiniTileMesh(meshMaxError, bounds, width, height, terrain)
+	if (terrainOptions.tesselector === 'delatin') return getDelatinTileMesh(meshMaxError, bounds, width, height, terrain)
+}
+
+function getMartiniTileMesh(meshMaxError, bounds, width, height, terrain) {
+	const gridSize = width + 1;
 	const martini = new Martini(gridSize);
 	const tile = martini.createTile(terrain);
 	const { vertices, triangles } = tile.getMesh(meshMaxError);
@@ -95,18 +99,7 @@ function getMartiniTileMesh(terrainImage, terrainOptions) {
 	};
 }
 
-function getDelatinTileMesh(terrainImage, terrainOptions) {
-	if (terrainImage === null) {
-		return null;
-	}
-	const { meshMaxError, bounds, elevationDecoder } = terrainOptions;
-
-	const data = terrainImage.data;
-	const width = terrainImage.width;
-	const height = terrainImage.height;
-
-	const terrain = getTerrain(data, width, height, elevationDecoder);
-
+function getDelatinTileMesh(meshMaxError, bounds, width, height, terrain) {
 	const tin = new Delatin(terrain, width, height);
 	tin.run(meshMaxError)
 	const { coords, triangles } = tin;
@@ -133,6 +126,5 @@ export default async function loadTerrain(arrayBuffer, options, context) {
 	options.image.type = 'data';
 	const image = await context.parse(arrayBuffer, options, options.baseUri);
 	// Extend function to support additional mesh generation options (square grid or delatin)
-	if (options.terrain.tesselector === 'martini') return getMartiniTileMesh(image, options.terrain);
-	if (options.terrain.tesselector === 'delatin') return getDelatinTileMesh(image, options.terrain);
+	return getMesh(image, options.terrain)
 }
