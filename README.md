@@ -6,6 +6,7 @@ Create a new tesselector option for deck.gl terrain layer and loaders.gl terrain
 
 Install the required packages
 `yarn`
+
 Start the project via
 `npm run webpack && npm start`
 Go to http://0.0.0.0:3000/
