@@ -33,6 +33,9 @@ function App() {
 			bScaler: 0,
 			offset: 0
 		},
+		material: {
+			diffuse: 0.75
+		},
 
 		// Digital elevation model from https://www.usgs.gov/
 		elevationData: 'https://raw.githubusercontent.com/visgl/deck.gl-data/master/website/terrain.png',
