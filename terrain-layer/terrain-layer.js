@@ -90,8 +90,7 @@ export default class TerrainLayer extends CompositeLayer {
             props.meshMaxError !== oldProps.meshMaxError ||
             props.elevationDecoder !== oldProps.elevationDecoder ||
             props.bounds !== oldProps.bounds ||
-            props.tesselector !== oldProps.tesselector
-
+            props.tesselector !== oldProps.tesselector;
         if (!this.state.isTiled && shouldReload) {
             const terrain = this.loadTerrain(props);
             this.setState({ terrain });
@@ -107,7 +106,7 @@ export default class TerrainLayer extends CompositeLayer {
                 bounds,
                 meshMaxError,
                 elevationDecoder,
-                tesselector
+                tesselector,
             }
         };
         if (workerUrl !== null) {
