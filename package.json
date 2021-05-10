@@ -16,13 +16,18 @@
         "@loaders.gl/loader-utils": "^2.3.13",
         "@mapbox/martini": "^0.2.0",
         "@math.gl/culling": "^3.4.2",
+        "bootstrap": "^5.0.0",
         "deck.gl": "^8.4.15",
         "delatin": "^0.2.0",
         "math.gl": "^3.4.2",
         "react": "^16.13.1",
+        "react-bootstrap": "^1.5.2",
         "react-dom": "^16.13.1",
         "react-hot-loader": "^4.13.0",
-        "react-map-gl": "^6.1.13"
+        "react-map-gl": "^6.1.13",
+        "react-redux": "^7.2.4",
+        "react-slider": "^1.1.4",
+        "redux": "^4.1.0"
     },
     "devDependencies": {
         "@babel/core": "^7.13.16",
