@@ -1,6 +1,6 @@
 import { getMeshBoundingBox } from '@loaders.gl/loader-utils';
 import Martini from '@mapbox/martini';
-import Delatin from '../../../delatin/delatin';
+import Delatin from 'delatin';
 
 function getTerrain(imageData, width, height, elevationDecoder) {
 	const { rScaler, bScaler, gScaler, offset } = elevationDecoder;
