@@ -59,7 +59,7 @@ function App() {
 	return (
 		<DeckGL
 			controller={true}
-			initialViewState={HK_INITIAL_VIEW_STATE}
+			initialViewState={INITIAL_VIEW_STATE}
 			layers={[HKTerrain]}
 		>
 			<StaticMap
