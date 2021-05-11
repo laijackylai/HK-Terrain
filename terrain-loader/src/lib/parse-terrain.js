@@ -1,6 +1,6 @@
 import { getMeshBoundingBox } from '@loaders.gl/loader-utils';
 import Martini from '@mapbox/martini';
-import Delatin from 'delatin';
+import Delatin from '../../../delatin/delatin';
 
 function getTerrain(imageData, width, height, elevationDecoder) {
 	const { rScaler, bScaler, gScaler, offset } = elevationDecoder;
@@ -72,11 +72,13 @@ function getMesh(terrainImage, terrainOptions) {
 	const height = terrainImage.height;
 	const terrain = getTerrain(data, width, height, elevationDecoder);
 
+	if (width !== height) return getDelatinTileMesh(meshMaxError, bounds, width, height, terrain)
 	if (terrainOptions.tesselector === 'martini') return getMartiniTileMesh(meshMaxError, bounds, width, height, terrain)
 	if (terrainOptions.tesselector === 'delatin') return getDelatinTileMesh(meshMaxError, bounds, width, height, terrain)
 }
 
 function getMartiniTileMesh(meshMaxError, bounds, width, height, terrain) {
+	console.log('using martini')
 	const gridSize = width + 1;
 	const martini = new Martini(gridSize);
 	const tile = martini.createTile(terrain);
@@ -100,7 +102,8 @@ function getMartiniTileMesh(meshMaxError, bounds, width, height, terrain) {
 }
 
 function getDelatinTileMesh(meshMaxError, bounds, width, height, terrain) {
-	const tin = new Delatin(terrain, width, height);
+	console.log('using delatin')
+	const tin = new Delatin(terrain, width + 1, height + 1);
 	tin.run(meshMaxError)
 	const { coords, triangles } = tin;
 
