@@ -37,18 +37,18 @@ function App() {
 			diffuse: 0.75
 		},
 
-		// Digital elevation model from https://www.usgs.gov/
-		elevationData: 'https://raw.githubusercontent.com/visgl/deck.gl-data/master/website/terrain.png',
-		texture: 'https://raw.githubusercontent.com/visgl/deck.gl-data/master/website/terrain-mask.png',
-		bounds: [-122.5233, 37.6493, -122.3566, 37.8159],
-		meshMaxError: meshMaxError,
-
-		// // hk terrain
-		// elevationData: 'https://raw.githubusercontent.com/laijackylai/loadersgl-tesselector/main/img/hk_terrain_resized_bigger.png',
-		// bounds: [113.825288215, 22.137987659, 114.444071614, 22.571610740],
+		// // Digital elevation model from https://www.usgs.gov/
+		// elevationData: 'https://raw.githubusercontent.com/visgl/deck.gl-data/master/website/terrain.png',
+		// texture: 'https://raw.githubusercontent.com/visgl/deck.gl-data/master/website/terrain-mask.png',
+		// bounds: [-122.5233, 37.6493, -122.3566, 37.8159],
 		// meshMaxError: meshMaxError,
 
-		tesselector: tesselector,
+		// hk terrain
+		elevationData: 'https://raw.githubusercontent.com/laijackylai/loadersgl-tesselector/main/img/hk_terrain_resized_bigger.png',
+		bounds: [113.825288215, 22.137987659, 114.444071614, 22.571610740],
+		meshMaxError: meshMaxError,
+
+		// tesselector: tesselector,
 
 		updateTriggers: {
 			meshMaxError: meshMaxError,
@@ -59,7 +59,7 @@ function App() {
 	return (
 		<DeckGL
 			controller={true}
-			initialViewState={INITIAL_VIEW_STATE}
+			initialViewState={HK_INITIAL_VIEW_STATE}
 			layers={[HKTerrain]}
 		>
 			<StaticMap
