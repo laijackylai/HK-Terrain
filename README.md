@@ -24,4 +24,4 @@ The number is a slider for changing maxMeshError
 
 1. Added and updated parse-terrain.js to create terrain using delatin when selected
 2. Added tesselector option in terrain-layer.js (defaults to martini)
-3. Added tesselector option in terrain-loader.js
+3. Added tesselector option in terrain-loader.js (deck.gl)
