@@ -2,6 +2,8 @@
 
 Create a new tesselector option for deck.gl terrain layer and loaders.gl terrain loader
 
+Defaults the tesselector to martini while using delatin as a fallback when the image provided is not a sqare image. The user can also specify the desired loader
+
 ### To start the project
 
 Install the required packages

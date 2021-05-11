@@ -1,6 +1,6 @@
 import { combineReducers } from "redux";
 
-const meshMaxErrorReducer = (state = 0.1, action) => {
+const meshMaxErrorReducer = (state = 2.5, action) => {
     switch (action.type) {
         case "SET_MESH_MAX_ERROR":
             state = action.payload
@@ -10,7 +10,7 @@ const meshMaxErrorReducer = (state = 0.1, action) => {
     }
 }
 
-const tesselectorReducer = (state = 'delatin', action) => {
+const tesselectorReducer = (state = 'martini', action) => {
     switch (action.type) {
         case "SET_TESSELECTOR":
             state = action.payload

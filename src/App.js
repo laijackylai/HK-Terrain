@@ -48,7 +48,7 @@ function App() {
 		bounds: [113.825288215, 22.137987659, 114.444071614, 22.571610740],
 		meshMaxError: meshMaxError,
 
-		// tesselector: tesselector,
+		tesselector: tesselector,
 
 		updateTriggers: {
 			meshMaxError: meshMaxError,

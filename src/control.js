@@ -28,7 +28,7 @@ const MeshMaxErrorSlider = () => {
     const onChange = (val) => { dispatch(setMeshMaxError(val)) }
 
     return (
-        <ReactSlider min={0} max={5} step={0.1} onAfterChange={onChange} renderThumb={(props, state) => <div {...props}>{state.valueNow}</div>} />
+        <ReactSlider min={0} max={5} step={0.1} defaultValue={2.5} onAfterChange={onChange} renderThumb={(props, state) => <div {...props}>{state.valueNow}</div>} />
     )
 }
 
