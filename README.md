@@ -11,7 +11,7 @@ Install the required packages
 
 Start the project via
 `npm run webpack && npm start`
-Go to http://0.0.0.0:3000/
+Go to http://0.0.0.0:3000/ or http://localhost:3000
 
 ### Controls
 
