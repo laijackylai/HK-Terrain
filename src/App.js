@@ -44,7 +44,7 @@ function App() {
 		meshMaxError: meshMaxError,
 
 		// // hk terrain
-		// elevationData: 'https://raw.githubusercontent.com/laijackylai/loadersgl-tesselector/main/img/hk_terrain_resized_biggest.png',
+		// elevationData: 'https://raw.githubusercontent.com/laijackylai/loadersgl-tesselector/main/img/hk_terrain_resized_bigger.png',
 		// bounds: [113.825288215, 22.137987659, 114.444071614, 22.571610740],
 		// meshMaxError: meshMaxError,
 
