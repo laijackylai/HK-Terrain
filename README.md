@@ -6,8 +6,10 @@ Defaults the tesselector to martini while using delatin as a fallback when the i
 
 ### To start the project
 
-Install the required packages
-`yarn`
+Install the required packages using npm or yarn
+`npm install`
+
+`npm install --global yarn && yarn`
 
 Start the project via
 `npm run webpack && npm start`
