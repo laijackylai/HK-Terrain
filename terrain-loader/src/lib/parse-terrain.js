@@ -73,11 +73,24 @@ function getMesh(terrainImage, terrainOptions) {
   const terrain = getTerrain(data, width, height, elevationDecoder);
 
   let mesh;
-  if (terrainOptions.tesselector === 'martini' && width === height) {
-    mesh = getMartiniTileMesh(meshMaxError, width, terrain)
-  } else {
-    mesh = getDelatinTileMesh(meshMaxError, width, height, terrain)
+
+  switch (terrainOptions.tesselactor) {
+    case 'martini':
+      mesh = getMartiniTileMesh(meshMaxError, width, terrain)
+      break;
+    case 'delatin':
+      mesh = getDelatinTileMesh(meshMaxError, width, height, terrain)
+      break;
+    default: //auto
+      if (width === height && width !== 0 && !(width & (width - 1))) {
+        mesh = getMartiniTileMesh(meshMaxError, width, terrain)
+        break;
+      } else {
+        mesh = getDelatinTileMesh(meshMaxError, width, height, terrain)
+        break;
+      }
   }
+
   const { vertices, triangles } = mesh;
   const attributes = getMeshAttributes(vertices, terrain, width, height, bounds);
 

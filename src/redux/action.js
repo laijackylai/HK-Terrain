@@ -5,9 +5,9 @@ export const setMeshMaxError = (err) => {
     }
 }
 
-export const setTesselector = (tesselector) => {
+export const setTesselactor = (tesselactor) => {
     return {
-        type: "SET_TESSELECTOR",
-        payload: tesselector
+        type: "SET_TESSELACTOR",
+        payload: tesselactor
     }
 }
