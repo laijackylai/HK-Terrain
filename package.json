@@ -20,6 +20,7 @@
 		"deck.gl": "^8.4.15",
 		"delatin": "^0.2.0",
 		"math.gl": "^3.4.2",
+		"prettier": "^2.3.0",
 		"react": "^16.13.1",
 		"react-bootstrap": "^1.5.2",
 		"react-dom": "^16.13.1",
