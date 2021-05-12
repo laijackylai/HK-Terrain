@@ -1,9 +1,9 @@
-import { getMeshBoundingBox } from '@loaders.gl/loader-utils';
+import {getMeshBoundingBox} from '@loaders.gl/loader-utils';
 import Martini from '@mapbox/martini';
 import Delatin from 'delatin';
 
 function getTerrain(imageData, width, height, elevationDecoder) {
-  const { rScaler, bScaler, gScaler, offset } = elevationDecoder;
+  const {rScaler, bScaler, gScaler, offset} = elevationDecoder;
 
   // From Martini demo
   // https://observablehq.com/@mourner/martin-real-time-rtin-terrain-mesh
@@ -55,15 +55,15 @@ function getMeshAttributes(vertices, terrain, width, height, bounds) {
   }
 
   return {
-    POSITION: { value: positions, size: 3 },
-    TEXCOORD_0: { value: texCoords, size: 2 }
+    POSITION: {value: positions, size: 3},
+    TEXCOORD_0: {value: texCoords, size: 2}
     // NORMAL: {}, - optional, but creates the high poly look with lighting
   };
 }
 
 /**
  * Returns generated mesh object from image data
- * 
+ *
  * @param {Array} terrainImage terrain image data
  * @param {object} terrainOptions terrain options
  * @returns mesh object
@@ -72,34 +72,33 @@ function getMesh(terrainImage, terrainOptions) {
   if (terrainImage === null) {
     return null;
   }
-  const { meshMaxError, bounds, elevationDecoder } = terrainOptions;
+  const {meshMaxError, bounds, elevationDecoder} = terrainOptions;
 
-  const data = terrainImage.data;
-  const width = terrainImage.width;
-  const height = terrainImage.height;
+  const {data} = terrainImage;
+  const {width} = terrainImage;
+  const {height} = terrainImage;
   const terrain = getTerrain(data, width, height, elevationDecoder);
 
   let mesh;
 
   switch (terrainOptions.tesselactor) {
     case 'martini':
-      mesh = getMartiniTileMesh(meshMaxError, width, terrain)
+      mesh = getMartiniTileMesh(meshMaxError, width, terrain);
       break;
     case 'delatin':
-      mesh = getDelatinTileMesh(meshMaxError, width, height, terrain)
+      mesh = getDelatinTileMesh(meshMaxError, width, height, terrain);
       break;
-    //auto
+    // auto
     default:
       if (width === height && width !== 0 && !(width & (width - 1))) {
-        mesh = getMartiniTileMesh(meshMaxError, width, terrain)
-        break;
+        mesh = getMartiniTileMesh(meshMaxError, width, terrain);
       } else {
-        mesh = getDelatinTileMesh(meshMaxError, width, height, terrain)
-        break;
+        mesh = getDelatinTileMesh(meshMaxError, width, height, terrain);
       }
+      break;
   }
 
-  const { vertices, triangles } = mesh;
+  const {vertices, triangles} = mesh;
   const attributes = getMeshAttributes(vertices, terrain, width, height, bounds);
 
   return {
@@ -112,14 +111,14 @@ function getMesh(terrainImage, terrainOptions) {
       boundingBox: getMeshBoundingBox(attributes)
     },
     mode: 4, // TRIANGLES
-    indices: { value: Uint32Array.from(triangles), size: 1 },
+    indices: {value: Uint32Array.from(triangles), size: 1},
     attributes
   };
 }
 
 /**
  * Get Martini generated vertices and triangles
- * 
+ *
  * @param {number} meshMaxError threshold for simplifying mesh
  * @param {number} width width of the input data
  * @param {*} terrain elevation data
@@ -129,9 +128,9 @@ function getMartiniTileMesh(meshMaxError, width, terrain) {
   const gridSize = width + 1;
   const martini = new Martini(gridSize);
   const tile = martini.createTile(terrain);
-  const { vertices, triangles } = tile.getMesh(meshMaxError);
+  const {vertices, triangles} = tile.getMesh(meshMaxError);
 
-  return { vertices, triangles }
+  return {vertices, triangles};
 }
 
 /**
@@ -145,10 +144,10 @@ function getMartiniTileMesh(meshMaxError, width, terrain) {
  */
 function getDelatinTileMesh(meshMaxError, width, height, terrain) {
   const tin = new Delatin(terrain, width + 1, height + 1);
-  tin.run(meshMaxError)
-  const { coords, triangles } = tin;
-  const vertices = coords
-  return { vertices, triangles };
+  tin.run(meshMaxError);
+  const {coords, triangles} = tin;
+  const vertices = coords;
+  return {vertices, triangles};
 }
 
 export default async function loadTerrain(arrayBuffer, options, context) {
@@ -156,5 +155,5 @@ export default async function loadTerrain(arrayBuffer, options, context) {
   options.image.type = 'data';
   const image = await context.parse(arrayBuffer, options, options.baseUri);
   // Extend function to support additional mesh generation options (square grid or delatin)
-  return getMesh(image, options.terrain)
+  return getMesh(image, options.terrain);
 }

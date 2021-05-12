@@ -1,7 +1,7 @@
 /** @typedef {import('@loaders.gl/loader-utils').WorkerLoaderObject} WorkerLoaderObject */
 /** @typedef {import('@loaders.gl/loader-utils').LoaderObject} LoaderObject */
+import {VERSION} from './lib/utils/version';
 import loadTerrain from './lib/parse-terrain';
-import { VERSION } from './lib/utils/version';
 
 /**
  * Worker loader for quantized meshes

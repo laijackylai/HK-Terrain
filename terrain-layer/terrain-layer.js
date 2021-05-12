@@ -18,12 +18,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-import { CompositeLayer, COORDINATE_SYSTEM, WebMercatorViewport } from '@deck.gl/core';
-import { SimpleMeshLayer } from '@deck.gl/mesh-layers';
-import { load } from '@loaders.gl/core';
-import { TerrainLoader } from '../terrain-loader/src/index';
+import {CompositeLayer, COORDINATE_SYSTEM, WebMercatorViewport} from '@deck.gl/core';
+import {SimpleMeshLayer} from '@deck.gl/mesh-layers';
+import {load} from '@loaders.gl/core';
+import {TerrainLoader} from '../terrain-loader/src/index';
 import TileLayer from '../tile-layer/tile-layer';
-import { getURLFromTemplate, urlType } from '../tile-layer/utils';
+import {getURLFromTemplate, urlType} from '../tile-layer/utils';
 
 const DUMMY_DATA = [1];
 
@@ -34,11 +34,16 @@ const defaultProps = {
   // Image url to use as texture
   texture: urlType,
   // Martini error tolerance in meters, smaller number -> more detailed mesh
-  meshMaxError: { type: 'number', value: 4.0 },
+  meshMaxError: {type: 'number', value: 4.0},
   // Bounding box of the terrain image, [minX, minY, maxX, maxY] in world coordinates
-  bounds: { type: 'array', value: null, optional: true, compare: true },
+  bounds: {
+    type: 'array',
+    value: null,
+    optional: true,
+    compare: true
+  },
   // Color to use if texture is unavailable
-  color: { type: 'color', value: [255, 255, 255] },
+  color: {type: 'color', value: [255, 255, 255]},
   // Object to decode height data, from (r, g, b) to height in meters
   elevationDecoder: {
     type: 'object',
@@ -50,7 +55,7 @@ const defaultProps = {
     }
   },
   // Supply url to local terrain worker bundle. Only required if running offline and cannot access CDN.
-  workerUrl: { type: 'string', value: null },
+  workerUrl: {type: 'string', value: null},
   // Same as SimpleMeshLayer wireframe
   wireframe: false,
   material: true,
@@ -73,15 +78,15 @@ function urlTemplateToUpdateTrigger(template) {
  * }
  */
 export default class TerrainLayer extends CompositeLayer {
-  updateState({ props, oldProps }) {
+  updateState({props, oldProps}) {
     const elevationDataChanged = props.elevationData !== oldProps.elevationData;
     if (elevationDataChanged) {
-      const { elevationData } = props;
+      const {elevationData} = props;
       const isTiled =
         elevationData &&
         (Array.isArray(elevationData) ||
           (elevationData.includes('{x}') && elevationData.includes('{y}')));
-      this.setState({ isTiled });
+      this.setState({isTiled});
     }
 
     // Reloading for single terrain mesh
@@ -93,11 +98,11 @@ export default class TerrainLayer extends CompositeLayer {
       props.tesselactor !== oldProps.tesselactor;
     if (!this.state.isTiled && shouldReload) {
       const terrain = this.loadTerrain(props);
-      this.setState({ terrain });
+      this.setState({terrain});
     }
   }
 
-  loadTerrain({ elevationData, bounds, elevationDecoder, meshMaxError, workerUrl, tesselactor }) {
+  loadTerrain({elevationData, bounds, elevationDecoder, meshMaxError, workerUrl, tesselactor}) {
     if (!elevationData) {
       return null;
     }
@@ -106,7 +111,7 @@ export default class TerrainLayer extends CompositeLayer {
         bounds,
         meshMaxError,
         elevationDecoder,
-        tesselactor,
+        tesselactor
       }
     };
     if (workerUrl !== null) {
@@ -116,11 +121,11 @@ export default class TerrainLayer extends CompositeLayer {
   }
 
   getTiledTerrainData(tile) {
-    const { elevationData, texture, elevationDecoder, meshMaxError, workerUrl } = this.props;
+    const {elevationData, texture, elevationDecoder, meshMaxError, workerUrl} = this.props;
     const dataUrl = getURLFromTemplate(elevationData, tile);
     const textureUrl = getURLFromTemplate(texture, tile);
 
-    const { bbox, z } = tile;
+    const {bbox, z} = tile;
     const viewport = new WebMercatorViewport({
       longitude: (bbox.west + bbox.east) / 2,
       latitude: (bbox.north + bbox.south) / 2,
@@ -139,7 +144,7 @@ export default class TerrainLayer extends CompositeLayer {
     });
     const surface = textureUrl
       ? // If surface image fails to load, the tile should still be displayed
-      load(textureUrl).catch(_ => null)
+        load(textureUrl).catch(() => null)
       : Promise.resolve(null);
 
     return Promise.all([terrain, surface]);
@@ -147,7 +152,7 @@ export default class TerrainLayer extends CompositeLayer {
 
   renderSubLayers(props) {
     const SubLayerClass = this.getSubLayerClass('mesh', SimpleMeshLayer);
-    const { data, color } = props;
+    const {data, color} = props;
 
     if (!data) {
       return null;
@@ -160,7 +165,7 @@ export default class TerrainLayer extends CompositeLayer {
       mesh,
       texture,
       coordinateSystem: COORDINATE_SYSTEM.CARTESIAN,
-      getPosition: d => [0, 0, 0],
+      getPosition: [0, 0, 0],
       getColor: color
     });
   }
@@ -171,22 +176,22 @@ export default class TerrainLayer extends CompositeLayer {
       return;
     }
 
-    const { zRange } = this.state;
+    const {zRange} = this.state;
     const ranges = tiles
-      .map(tile => tile.content)
+      .map((tile) => tile.content)
       .filter(Boolean)
-      .map(arr => {
+      .map((arr) => {
         const bounds = arr[0].header.boundingBox;
-        return bounds.map(bound => bound[2]);
+        return bounds.map((bound) => bound[2]);
       });
     if (ranges.length === 0) {
       return;
     }
-    const minZ = Math.min(...ranges.map(x => x[0]));
-    const maxZ = Math.max(...ranges.map(x => x[1]));
+    const minZ = Math.min(...ranges.map((x) => x[0]));
+    const maxZ = Math.max(...ranges.map((x) => x[1]));
 
     if (!zRange || minZ < zRange[0] || maxZ > zRange[1]) {
-      this.setState({ zRange: [minZ, maxZ] });
+      this.setState({zRange: [minZ, maxZ]});
     }
   }
 
@@ -260,7 +265,7 @@ export default class TerrainLayer extends CompositeLayer {
         mesh: this.state.terrain,
         texture,
         _instanced: false,
-        getPosition: d => [0, 0, 0],
+        getPosition: [0, 0, 0],
         getColor: color,
         material,
         wireframe
