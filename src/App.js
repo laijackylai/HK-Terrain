@@ -25,7 +25,7 @@ const HK_INITIAL_VIEW_STATE = {
 
 function App() {
   const meshMaxError = useSelector((state) => state.meshMaxError);
-  const tesselactor = useSelector((state) => state.tesselactor);
+  const tesselator = useSelector((state) => state.tesselator);
 
   const HKTerrain = new TerrainLayer({
     elevationDecoder: {
@@ -38,28 +38,29 @@ function App() {
       diffuse: 0.75
     },
 
-    // Digital elevation model from https://www.usgs.gov/
+    // // Digital elevation model from https://www.usgs.gov/
+    // elevationData:
+    //   'https://raw.githubusercontent.com/visgl/deck.gl-data/master/website/terrain.png',
+    // texture: 'https://raw.githubusercontent.com/visgl/deck.gl-data/master/website/terrain-mask.png',
+    // bounds: [-122.5233, 37.6493, -122.3566, 37.8159],
+    // meshMaxError,
+
+    // hk terrain
     elevationData:
-      'https://raw.githubusercontent.com/visgl/deck.gl-data/master/website/terrain.png',
-    texture: 'https://raw.githubusercontent.com/visgl/deck.gl-data/master/website/terrain-mask.png',
-    bounds: [-122.5233, 37.6493, -122.3566, 37.8159],
-    meshMaxError,
+      'https://raw.githubusercontent.com/laijackylai/loadersgl-tesselector/main/img/hk_terrain_resized_bigger.png',
+    bounds: [113.825288215, 22.137987659, 114.444071614, 22.57161074],
+    meshMaxError: meshMaxError,
 
-    // // hk terrain
-    // elevationData: 'https://raw.githubusercontent.com/laijackylai/loadersgl-tesselector/main/img/hk_terrain_resized_bigger.png',
-    // bounds: [113.825288215, 22.137987659, 114.444071614, 22.571610740],
-    // meshMaxError: meshMaxError,
-
-    tesselactor,
+    tesselator,
 
     updateTriggers: {
       meshMaxError,
-      tesselactor
+      tesselator
     }
   });
 
   return (
-    <DeckGL controller initialViewState={INITIAL_VIEW_STATE} layers={[HKTerrain]}>
+    <DeckGL controller initialViewState={HK_INITIAL_VIEW_STATE} layers={[HKTerrain]}>
       <StaticMap
         mapboxApiAccessToken={MAPBOX_ACCESS_TOKEN}
         // mapStyle="mapbox://styles/mapbox/dark-v8"

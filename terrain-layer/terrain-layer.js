@@ -59,7 +59,7 @@ const defaultProps = {
   // Same as SimpleMeshLayer wireframe
   wireframe: false,
   material: true,
-  tesselactor: 'auto',
+  tesselator: 'auto',
   loaders: [TerrainLoader]
 };
 
@@ -95,14 +95,14 @@ export default class TerrainLayer extends CompositeLayer {
       props.meshMaxError !== oldProps.meshMaxError ||
       props.elevationDecoder !== oldProps.elevationDecoder ||
       props.bounds !== oldProps.bounds ||
-      props.tesselactor !== oldProps.tesselactor;
+      props.tesselator !== oldProps.tesselator;
     if (!this.state.isTiled && shouldReload) {
       const terrain = this.loadTerrain(props);
       this.setState({terrain});
     }
   }
 
-  loadTerrain({elevationData, bounds, elevationDecoder, meshMaxError, workerUrl, tesselactor}) {
+  loadTerrain({elevationData, bounds, elevationDecoder, meshMaxError, workerUrl, tesselator}) {
     if (!elevationData) {
       return null;
     }
@@ -111,7 +111,7 @@ export default class TerrainLayer extends CompositeLayer {
         bounds,
         meshMaxError,
         elevationDecoder,
-        tesselactor
+        tesselator
       }
     };
     if (workerUrl !== null) {

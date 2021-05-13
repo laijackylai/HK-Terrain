@@ -1,7 +1,7 @@
 {
   "name": "loadersgl-terrain-loader-improvement",
   "version": "1.0.0",
-  "description": "add terrain loader tesselactor to loader.gl",
+  "description": "add terrain loader tesselator to loader.gl",
   "main": "index.js",
   "scripts": {
     "webpack": "webpack",

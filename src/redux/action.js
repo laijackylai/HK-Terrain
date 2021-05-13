@@ -3,7 +3,7 @@ export const setMeshMaxError = (err) => ({
   payload: err
 });
 
-export const setTesselactor = (tesselactor) => ({
-  type: 'SET_TESSELACTOR',
-  payload: tesselactor
+export const setTesselator = (tesselator) => ({
+  type: 'SET_TESSELATOR',
+  payload: tesselator
 });

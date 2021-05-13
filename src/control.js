@@ -2,19 +2,19 @@ import React from 'react';
 import Dropdown from 'react-bootstrap/Dropdown';
 import {useDispatch} from 'react-redux';
 import ReactSlider from 'react-slider';
-import {setMeshMaxError, setTesselactor} from './redux/action';
+import {setMeshMaxError, setTesselator} from './redux/action';
 
-const TesselactorDropdown = () => {
+const TesselatorDropdown = () => {
   const dispatch = useDispatch();
 
-  const onSelect = (tesselactor) => {
-    dispatch(setTesselactor(tesselactor));
+  const onSelect = (tesselator) => {
+    dispatch(setTesselator(tesselator));
   };
 
   return (
     <Dropdown onSelect={onSelect} style={{marginBottom: 20}}>
       <Dropdown.Toggle variant="success" id="dropdown-basic">
-        Tesselactor
+        Tesselator
       </Dropdown.Toggle>
       <Dropdown.Menu>
         <Dropdown.Item eventKey="auto">Auto</Dropdown.Item>
@@ -46,7 +46,7 @@ const MeshMaxErrorSlider = () => {
 
 const Controls = () => (
   <div style={controlStyles}>
-    <TesselactorDropdown />
+    <TesselatorDropdown />
     <MeshMaxErrorSlider />
   </div>
 );

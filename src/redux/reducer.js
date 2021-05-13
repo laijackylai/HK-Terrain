@@ -10,9 +10,9 @@ const meshMaxErrorReducer = (state = 2.5, action) => {
   }
 };
 
-const tesselactorReducer = (state = 'auto', action) => {
+const tesselatorReducer = (state = 'auto', action) => {
   switch (action.type) {
-    case 'SET_TESSELACTOR':
+    case 'SET_TESSELATOR':
       state = action.payload;
       return state;
     default:
@@ -22,7 +22,7 @@ const tesselactorReducer = (state = 'auto', action) => {
 
 const rootReducer = combineReducers({
   meshMaxError: meshMaxErrorReducer,
-  tesselactor: tesselactorReducer
+  tesselator: tesselatorReducer
 });
 
 export default rootReducer;

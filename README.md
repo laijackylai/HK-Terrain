@@ -1,8 +1,8 @@
-# loadersgl-tesselactor
+# loadersgl-tesselator
 
-Create a new tesselactor option for deck.gl terrain layer and loaders.gl terrain loader
+Create a new tesselator option for deck.gl terrain layer and loaders.gl terrain loader
 
-Defaults the tesselactor to martini while using delatin as a fallback when the image provided is not a sqare image. The user can also specify the desired loader
+Defaults the tesselator to martini while using delatin as a fallback when the image provided is not a sqare image. The user can also specify the desired loader
 
 ### To start the project
 
@@ -23,5 +23,5 @@ The number is a slider for changing maxMeshError
 ### Changes
 
 1. Added and updated parse-terrain.js to create terrain using delatin when selected
-2. Added tesselactor option in terrain-layer.js (defaults to martini)
-3. Added tesselactor option in terrain-loader.js (deck.gl)
+2. Added tesselator option in terrain-layer.js (defaults to martini)
+3. Added tesselator option in terrain-loader.js (deck.gl)
