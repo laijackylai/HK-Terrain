@@ -1,19 +1,19 @@
-import {DeckGL} from 'deck.gl';
+import { DeckGL } from 'deck.gl';
 import React from 'react';
-import {hot} from 'react-hot-loader/root';
-import {StaticMap} from 'react-map-gl';
-import {useSelector} from 'react-redux';
+import { hot } from 'react-hot-loader/root';
+import { StaticMap } from 'react-map-gl';
+import { useSelector } from 'react-redux';
 import TerrainLayer from '../terrain-layer/terrain-layer';
 import './App.css';
 
 const MAPBOX_ACCESS_TOKEN =
   'pk.eyJ1IjoibGFpamFja3lsYWkiLCJhIjoiY2tjZWZucjAzMDd1eDJzcGJvN2tiZHduOSJ9.vWThniHwg9V1wEO3O6xn_g';
-const INITIAL_VIEW_STATE = {
-  longitude: -122.4,
-  latitude: 37.74,
-  zoom: 11,
-  bearing: 0
-};
+// const INITIAL_VIEW_STATE = {
+//   longitude: -122.4,
+//   latitude: 37.74,
+//   zoom: 11,
+//   bearing: 0
+// };
 const HK_INITIAL_VIEW_STATE = {
   altitude: 1.5,
   bearing: 0,
@@ -47,11 +47,9 @@ function App() {
 
     // hk terrain
     elevationData:
-      'https://raw.githubusercontent.com/laijackylai/loadersgl-tesselector/main/img/hk_terrain_resized_bigger.png',
+      'https://raw.githubusercontent.com/laijackylai/loadersgl-tesselector/main/img/hk_terrain_resized_biggest.png',
     bounds: [113.825288215, 22.137987659, 114.444071614, 22.57161074],
     meshMaxError: meshMaxError,
-
-    tesselator,
 
     updateTriggers: {
       meshMaxError,
@@ -63,7 +61,7 @@ function App() {
     <DeckGL controller initialViewState={HK_INITIAL_VIEW_STATE} layers={[HKTerrain]}>
       <StaticMap
         mapboxApiAccessToken={MAPBOX_ACCESS_TOKEN}
-        // mapStyle="mapbox://styles/mapbox/dark-v8"
+      // mapStyle="mapbox://styles/mapbox/dark-v8"
       />
     </DeckGL>
   );
