@@ -1,8 +1,8 @@
-import { DeckGL } from 'deck.gl';
+import {DeckGL} from 'deck.gl';
 import React from 'react';
-import { hot } from 'react-hot-loader/root';
-import { StaticMap } from 'react-map-gl';
-import { useSelector } from 'react-redux';
+import {hot} from 'react-hot-loader/root';
+import {StaticMap} from 'react-map-gl';
+import {useSelector} from 'react-redux';
 import TerrainLayer from '../terrain-layer/terrain-layer';
 import './App.css';
 
@@ -47,7 +47,7 @@ function App() {
 
     // hk terrain
     elevationData:
-      'https://raw.githubusercontent.com/laijackylai/loadersgl-tesselector/main/img/hk_terrain_resized_biggest.png',
+      'https://raw.githubusercontent.com/laijackylai/loadersgl-tesselector/main/img/hk_terrain_resized_bigger.png',
     bounds: [113.825288215, 22.137987659, 114.444071614, 22.57161074],
     meshMaxError: meshMaxError,
 
@@ -61,7 +61,7 @@ function App() {
     <DeckGL controller initialViewState={HK_INITIAL_VIEW_STATE} layers={[HKTerrain]}>
       <StaticMap
         mapboxApiAccessToken={MAPBOX_ACCESS_TOKEN}
-      // mapStyle="mapbox://styles/mapbox/dark-v8"
+        // mapStyle="mapbox://styles/mapbox/dark-v8"
       />
     </DeckGL>
   );
