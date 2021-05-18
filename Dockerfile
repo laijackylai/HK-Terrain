@@ -1,5 +1,5 @@
 FROM node:latest
 
-WORKDIR /loadersgl
+WORKDIR /loaders.gl
 
 CMD tail -f /dev/null
