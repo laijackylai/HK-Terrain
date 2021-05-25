@@ -3195,11 +3195,6 @@ del@^4.1.1:
     pify "^4.0.1"
     rimraf "^2.6.3"
 
-delatin@^0.2.0:
-  version "0.2.0"
-  resolved "https://registry.npmjs.org/delatin/-/delatin-0.2.0.tgz"
-  integrity sha512-HvDx6I5Jju/mqFp58/qeSL1wx6rYxsLWpWVSCQvL1Ps8MhVlttwm+Ohl38dUSTN439uxag//vXJm09PqFz+/Og==
-
 depd@~1.1.2:
   version "1.1.2"
   resolved "https://registry.npmjs.org/depd/-/depd-1.1.2.tgz"

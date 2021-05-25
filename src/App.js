@@ -70,7 +70,7 @@ function App() {
 
     // hk terrain
     elevationData:
-      'https://raw.githubusercontent.com/laijackylai/loadersgl-tesselector/main/img/hk_terrain_resized_biggest.png',
+      'https://raw.githubusercontent.com/laijackylai/loadersgl-tesselector/main/img/hk_terrain_resized_bigger.png',
     bounds: [113.825288215, 22.137987659, 114.444071614, 22.57161074],
 
     tesselator: tesselator,

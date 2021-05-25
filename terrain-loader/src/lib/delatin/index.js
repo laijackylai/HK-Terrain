@@ -1,3 +1,4 @@
+/* eslint-disable complexity, max-params, max-statements, max-depth, no-constant-condition */
 export default class Delatin {
   constructor(data, width, height = width) {
     this.data = data; // height data
@@ -63,7 +64,7 @@ export default class Delatin {
 
   // rasterize and queue all triangles that got added or updated in _step
   _flush() {
-    const {coords} = this;
+    const coords = this.coords;
     for (let i = 0; i < this._pendingLen; i++) {
       const t = this._pending[i];
       // rasterize triangle to find maximum pixel error
@@ -295,7 +296,7 @@ export default class Delatin {
     const pr = this.triangles[a];
     const pl = this.triangles[al];
     const p1 = this.triangles[bl];
-    const {coords} = this;
+    const coords = this.coords;
 
     if (
       !inCircle(

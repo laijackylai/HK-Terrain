@@ -1,6 +1,6 @@
 import {combineReducers} from 'redux';
 
-const meshMaxErrorReducer = (state = 2.5, action) => {
+const meshMaxErrorReducer = (state = 25, action) => {
   switch (action.type) {
     case 'SET_MESH_MAX_ERROR':
       state = action.payload;
