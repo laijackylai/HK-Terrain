@@ -1,10 +1,12 @@
 // import { TerrainLoader } from '@loaders.gl/terrain';
-import {DeckGL} from 'deck.gl';
-import React from 'react';
-import {hot} from 'react-hot-loader/root';
-import {StaticMap} from 'react-map-gl';
-import {useSelector} from 'react-redux';
+import { load } from '@loaders.gl/core';
+import { DeckGL } from 'deck.gl';
+import React, { useEffect } from 'react';
+import { hot } from 'react-hot-loader/root';
+import { StaticMap } from 'react-map-gl';
+import { useSelector } from 'react-redux';
 import TerrainLayer from '../terrain-layer/terrain-layer';
+import { TerrainLoader } from '../terrain-loader/src/index';
 import './App.css';
 
 const MAPBOX_ACCESS_TOKEN =
@@ -25,28 +27,29 @@ const HK_INITIAL_VIEW_STATE = {
 };
 
 function App() {
-  // useEffect(() => {
-  //   const run = async () => {
-  //     const MAPBOX_TERRAIN_PNG_URL =
-  //       'https://raw.githubusercontent.com/laijackylai/loaders.gl/master/modules/terrain/test/data/mapbox.png';
-  //     const options = {
-  //       terrain: {
-  //         elevationDecoder: {
-  //           rScaler: 65536 * 0.1,
-  //           gScaler: 256 * 0.1,
-  //           bScaler: 0.1,
-  //           offset: -10000
-  //         },
-  //         meshMaxError: 5.0,
-  //         bounds: [83, 329.5, 83.125, 329.625] // note: not the real tile bounds
-  //       }
-  //     };
-  //     const data = await load(MAPBOX_TERRAIN_PNG_URL, TerrainLoader, options);
-  //     // eslint-disable-next-line no-console
-  //     console.log(data);
-  //   };
-  //   run();
-  // }, []);
+  useEffect(() => {
+    const run = async () => {
+      const MAPBOX_TERRAIN_PNG_URL =
+        'https://raw.githubusercontent.com/laijackylai/loadersgl-tesselector/main/img/terrarium.png';
+      const options = {
+        terrain: {
+          elevationDecoder: {
+            rScaler: 65536 * 0.1,
+            gScaler: 256 * 0.1,
+            bScaler: 0.1,
+            offset: -10000
+          },
+          meshMaxError: 5.0,
+          bounds: [83, 329.5, 83.125, 329.625],
+          tesselator: 'delatin'
+        }
+      };
+      const data = await load(MAPBOX_TERRAIN_PNG_URL, TerrainLoader, options);
+      // eslint-disable-next-line no-console
+      console.log(data);
+    };
+    // run();
+  }, []);
 
   const meshMaxError = useSelector((state) => state.meshMaxError);
   const tesselator = useSelector((state) => state.tesselator);
@@ -73,6 +76,17 @@ function App() {
       'https://raw.githubusercontent.com/laijackylai/loadersgl-tesselector/main/img/hk_terrain_resized_bigger.png',
     bounds: [113.825288215, 22.137987659, 114.444071614, 22.57161074],
 
+    // test terrain
+    // elevationData: 'https://raw.githubusercontent.com/laijackylai/loadersgl-tesselector/main/img/terrarium.png',
+    // bounds: [83, 329.5, 83.125, 329.625],
+    // meshMaxError: 5.0,
+    // elevationDecoder: {
+    //   rScaler: 65536 * 0.1,
+    //   gScaler: 256 * 0.1,
+    //   bScaler: 0.1,
+    //   offset: -10000
+    // },
+
     tesselator: tesselator,
     meshMaxError: meshMaxError,
     updateTriggers: {
@@ -85,7 +99,7 @@ function App() {
     <DeckGL controller initialViewState={HK_INITIAL_VIEW_STATE} layers={[Terrain]}>
       <StaticMap
         mapboxApiAccessToken={MAPBOX_ACCESS_TOKEN}
-        // mapStyle="mapbox://styles/mapbox/dark-v8"
+      // mapStyle="mapbox://styles/mapbox/dark-v8"
       />
     </DeckGL>
   );
