@@ -1,7 +1,7 @@
 {
-  "name": "loadersgl-terrain-loader-improvement",
+  "name": "hk_terrain",
   "version": "1.0.0",
-  "description": "add terrain loader tesselator to loader.gl",
+  "description": "absolute most detailed HK terrain ever!",
   "main": "index.js",
   "scripts": {
     "webpack": "webpack",

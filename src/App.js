@@ -27,12 +27,12 @@ function App() {
   const sunlight = new SunLight({
     timestamp: moment().valueOf(),
     color: [255, 255, 255],
-    intensity: 1.5
+    intensity: 1.75
   });
 
   const ambientLight = new AmbientLight({
     color: [255, 255, 255],
-    intensity: 0.05
+    intensity: 0.075
   });
 
   const lightingEffect = new LightingEffect({
