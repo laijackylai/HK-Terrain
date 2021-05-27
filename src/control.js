@@ -17,9 +17,15 @@ const TesselatorDropdown = () => {
         Tesselator
       </Dropdown.Toggle>
       <Dropdown.Menu>
-        <Dropdown.Item eventKey="auto">Auto</Dropdown.Item>
-        <Dropdown.Item eventKey="martini">Martini</Dropdown.Item>
-        <Dropdown.Item eventKey="delatin">Delatin</Dropdown.Item>
+        <Dropdown.Item eventKey="auto">
+          <div style={textStyle}>Auto</div>
+        </Dropdown.Item>
+        <Dropdown.Item eventKey="martini">
+          <div style={textStyle}>Martini</div>
+        </Dropdown.Item>
+        <Dropdown.Item eventKey="delatin">
+          <div style={textStyle}>Delatin</div>
+        </Dropdown.Item>
       </Dropdown.Menu>
     </Dropdown>
   );
@@ -33,14 +39,21 @@ const MeshMaxErrorSlider = () => {
   };
 
   return (
-    <ReactSlider
-      min={0}
-      max={50}
-      step={0.1}
-      defaultValue={25}
-      onAfterChange={onChange}
-      renderThumb={(props, state) => <div {...props}>{state.valueNow}</div>}
-    />
+    <div>
+      <div style={textStyle}>Max Mesh Error</div>
+      <ReactSlider
+        min={0}
+        max={50}
+        step={0.1}
+        defaultValue={10}
+        onAfterChange={onChange}
+        renderThumb={(props, state) => (
+          <div {...props} style={textStyle}>
+            {state.valueNow}
+          </div>
+        )}
+      />
+    </div>
   );
 };
 
@@ -56,6 +69,10 @@ const controlStyles = {
   top: '10vh',
   right: '10vw',
   flexDirection: 'column'
+};
+
+const textStyle = {
+  color: 'white'
 };
 
 export default Controls;

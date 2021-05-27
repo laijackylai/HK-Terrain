@@ -1,22 +1,16 @@
 // import { TerrainLoader } from '@loaders.gl/terrain';
-import { load } from '@loaders.gl/core';
-import { DeckGL } from 'deck.gl';
-import React, { useEffect } from 'react';
-import { hot } from 'react-hot-loader/root';
-import { StaticMap } from 'react-map-gl';
-import { useSelector } from 'react-redux';
+import {AmbientLight, LightingEffect, _SunLight as SunLight} from '@deck.gl/core';
+import {DeckGL} from 'deck.gl';
+import moment from 'moment';
+import React from 'react';
+import {hot} from 'react-hot-loader/root';
+import {StaticMap} from 'react-map-gl';
+import {useSelector} from 'react-redux';
 import TerrainLayer from '../terrain-layer/terrain-layer';
-import { TerrainLoader } from '../terrain-loader/src/index';
 import './App.css';
 
 const MAPBOX_ACCESS_TOKEN =
   'pk.eyJ1IjoibGFpamFja3lsYWkiLCJhIjoiY2tjZWZucjAzMDd1eDJzcGJvN2tiZHduOSJ9.vWThniHwg9V1wEO3O6xn_g';
-// const INITIAL_VIEW_STATE = {
-//   longitude: -122.4,
-//   latitude: 37.74,
-//   zoom: 11,
-//   bearing: 0
-// };
 const HK_INITIAL_VIEW_STATE = {
   altitude: 1.5,
   bearing: 0,
@@ -27,32 +21,24 @@ const HK_INITIAL_VIEW_STATE = {
 };
 
 function App() {
-  useEffect(() => {
-    const run = async () => {
-      const MAPBOX_TERRAIN_PNG_URL =
-        'https://raw.githubusercontent.com/laijackylai/loadersgl-tesselector/main/img/terrarium.png';
-      const options = {
-        terrain: {
-          elevationDecoder: {
-            rScaler: 65536 * 0.1,
-            gScaler: 256 * 0.1,
-            bScaler: 0.1,
-            offset: -10000
-          },
-          meshMaxError: 5.0,
-          bounds: [83, 329.5, 83.125, 329.625],
-          tesselator: 'delatin'
-        }
-      };
-      const data = await load(MAPBOX_TERRAIN_PNG_URL, TerrainLoader, options);
-      // eslint-disable-next-line no-console
-      console.log(data);
-    };
-    // run();
-  }, []);
-
   const meshMaxError = useSelector((state) => state.meshMaxError);
   const tesselator = useSelector((state) => state.tesselator);
+
+  const sunlight = new SunLight({
+    timestamp: moment().valueOf(),
+    color: [255, 255, 255],
+    intensity: 1.5
+  });
+
+  const ambientLight = new AmbientLight({
+    color: [255, 255, 255],
+    intensity: 0.05
+  });
+
+  const lightingEffect = new LightingEffect({
+    sunlight,
+    ambientLight
+  });
 
   const Terrain = new TerrainLayer({
     elevationDecoder: {
@@ -62,7 +48,9 @@ function App() {
       offset: 0
     },
     material: {
-      diffuse: 0.75
+      ambient: 0.5,
+      diffuse: 0.5,
+      shininess: 100
     },
 
     // // Digital elevation model from https://www.usgs.gov/
@@ -76,17 +64,6 @@ function App() {
       'https://raw.githubusercontent.com/laijackylai/loadersgl-tesselector/main/img/hk_terrain_resized_bigger.png',
     bounds: [113.825288215, 22.137987659, 114.444071614, 22.57161074],
 
-    // test terrain
-    // elevationData: 'https://raw.githubusercontent.com/laijackylai/loadersgl-tesselector/main/img/terrarium.png',
-    // bounds: [83, 329.5, 83.125, 329.625],
-    // meshMaxError: 5.0,
-    // elevationDecoder: {
-    //   rScaler: 65536 * 0.1,
-    //   gScaler: 256 * 0.1,
-    //   bScaler: 0.1,
-    //   offset: -10000
-    // },
-
     tesselator: tesselator,
     meshMaxError: meshMaxError,
     updateTriggers: {
@@ -96,10 +73,15 @@ function App() {
   });
 
   return (
-    <DeckGL controller initialViewState={HK_INITIAL_VIEW_STATE} layers={[Terrain]}>
+    <DeckGL
+      controller
+      initialViewState={HK_INITIAL_VIEW_STATE}
+      layers={[Terrain]}
+      effects={[lightingEffect]}
+    >
       <StaticMap
         mapboxApiAccessToken={MAPBOX_ACCESS_TOKEN}
-      // mapStyle="mapbox://styles/mapbox/dark-v8"
+        mapStyle="mapbox://styles/mapbox/dark-v8"
       />
     </DeckGL>
   );
