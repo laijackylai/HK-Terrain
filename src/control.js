@@ -1,7 +1,7 @@
+import {Slider} from '@material-ui/core';
 import React from 'react';
 import Dropdown from 'react-bootstrap/Dropdown';
-import {useDispatch} from 'react-redux';
-import ReactSlider from 'react-slider';
+import {useDispatch, useSelector} from 'react-redux';
 import {setMeshMaxError, setTesselator} from './redux/action';
 
 const TesselatorDropdown = () => {
@@ -33,6 +33,7 @@ const TesselatorDropdown = () => {
 
 const MeshMaxErrorSlider = () => {
   const dispatch = useDispatch();
+  const meshMaxError = useSelector((state) => state.meshMaxError);
 
   const onChange = (val) => {
     dispatch(setMeshMaxError(val));
@@ -41,17 +42,13 @@ const MeshMaxErrorSlider = () => {
   return (
     <div>
       <div style={textStyle}>Max Mesh Error</div>
-      <ReactSlider
+      <Slider
+        value={meshMaxError}
         min={0}
         max={50}
-        step={0.1}
-        defaultValue={10}
-        onAfterChange={onChange}
-        renderThumb={(props, state) => (
-          <div {...props} style={textStyle}>
-            {state.valueNow}
-          </div>
-        )}
+        step={1}
+        valueLabelDisplay="auto"
+        onChange={(event, value) => onChange(value)}
       />
     </div>
   );

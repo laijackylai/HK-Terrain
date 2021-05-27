@@ -1,5 +1,5 @@
 FROM node:latest
 
-WORKDIR /loaders.gl
+WORKDIR /hkterrain
 
 CMD tail -f /dev/null
