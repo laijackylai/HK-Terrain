@@ -21,8 +21,8 @@ const defaultProps = {
     value: null,
     compare: false
   },
-  onTileLoad: {type: 'function', value: (tile) => {}, compare: false},
-  onTileUnload: {type: 'function', value: (tile) => {}, compare: false},
+  onTileLoad: {type: 'function', value: () => {}, compare: false},
+  onTileUnload: {type: 'function', value: () => {}, compare: false},
   // eslint-disable-next-line
   onTileError: {type: 'function', value: (err) => console.error(err), compare: false},
   extent: {
