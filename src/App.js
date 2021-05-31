@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 // import { TerrainLoader } from '@loaders.gl/terrain';
 import {AmbientLight, LightingEffect, _SunLight as SunLight} from '@deck.gl/core';
 import {DeckGL} from 'deck.gl';
@@ -8,6 +9,8 @@ import {StaticMap} from 'react-map-gl';
 import {useSelector} from 'react-redux';
 import TerrainLayer from '../terrain-layer/terrain-layer';
 import './App.css';
+import {TileLayer} from '@deck.gl/geo-layers';
+import {PathLayer} from '@deck.gl/layers';
 
 const MAPBOX_ACCESS_TOKEN =
   'pk.eyJ1IjoibGFpamFja3lsYWkiLCJhIjoiY2tjZWZucjAzMDd1eDJzcGJvN2tiZHduOSJ9.vWThniHwg9V1wEO3O6xn_g';
@@ -32,7 +35,7 @@ function App() {
 
   const ambientLight = new AmbientLight({
     color: [255, 255, 255],
-    intensity: 0.075
+    intensity: 0.05
   });
 
   const lightingEffect = new LightingEffect({
@@ -72,11 +75,36 @@ function App() {
     }
   });
 
+  const Tiles = new TileLayer({
+    renderSubLayers: (props) => {
+      const {
+        bbox: {west, south, east, north}
+      } = props.tile;
+
+      return new PathLayer({
+        id: `${props.id}-border`,
+        visible: props.visible,
+        data: [
+          [
+            [west, north],
+            [west, south],
+            [east, south],
+            [east, north],
+            [west, north]
+          ]
+        ],
+        getPath: (d) => d,
+        getColor: [255, 0, 0],
+        widthMinPixels: 4
+      });
+    }
+  });
+
   return (
     <DeckGL
       controller
       initialViewState={HK_INITIAL_VIEW_STATE}
-      layers={[Terrain]}
+      layers={[Terrain, Tiles]}
       effects={[lightingEffect]}
     >
       <StaticMap

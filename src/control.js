@@ -41,13 +41,13 @@ const MeshMaxErrorSlider = () => {
 
   return (
     <div>
-      <div style={textStyle}>Max Mesh Error</div>
+      <div style={meshTextStyle}>Max Mesh Error</div>
       <Slider
         value={meshMaxError}
         min={0}
         max={50}
         step={1}
-        valueLabelDisplay="auto"
+        valueLabelDisplay="on"
         onChange={(event, value) => onChange(value)}
       />
     </div>
@@ -70,6 +70,11 @@ const controlStyles = {
 
 const textStyle = {
   color: 'white'
+};
+
+const meshTextStyle = {
+  color: 'white',
+  marginBottom: '5vh'
 };
 
 export default Controls;
