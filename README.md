@@ -1,4 +1,4 @@
-# loadersgl-tesselator
+# HK Terrain
 
 Create a new tesselator option for deck.gl terrain layer and loaders.gl terrain loader
 
