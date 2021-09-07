@@ -18,9 +18,9 @@ const HK_INITIAL_VIEW_STATE = {
   altitude: 1.5,
   bearing: 0,
   height: 945,
-  latitude: 22.30784362549607,
-  longitude: 114.13973361634052,
-  zoom: 10.138384970180818
+  latitude: 22.31447606849338,
+  longitude: 114.11603657357644,
+  zoom: 15
 };
 
 function App() {
@@ -63,9 +63,13 @@ function App() {
     // bounds: [-122.5233, 37.6493, -122.3566, 37.8159],
 
     // hk terrain
-    elevationData:
-      'https://raw.githubusercontent.com/laijackylai/loadersgl-tesselector/main/img/hk_terrain_resized_bigger.png',
-    bounds: [113.825288215, 22.137987659, 114.444071614, 22.57161074],
+    // elevationData:
+    //   'https://raw.githubusercontent.com/laijackylai/loadersgl-tesselector/main/img/hk_terrain_resized_bigger.png',
+    // bounds: [113.825288215, 22.137987659, 114.444071614, 22.57161074],
+
+    // test dsm
+    elevationData: require('../map/6NW24C(e819n830,e820n830).png'),
+    bounds: [114.11603657357644, 22.31447606849338, 114.12186276237765, 22.321250981054725],
 
     tesselator: tesselator,
     meshMaxError: meshMaxError,
