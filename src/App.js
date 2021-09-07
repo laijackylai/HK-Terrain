@@ -45,7 +45,7 @@ function App() {
 
   const Terrain = new TerrainLayer({
     elevationDecoder: {
-      rScaler: 4,
+      rScaler: 1,
       gScaler: 0,
       bScaler: 0,
       offset: 0
@@ -68,8 +68,9 @@ function App() {
     // bounds: [113.825288215, 22.137987659, 114.444071614, 22.57161074],
 
     // test dsm
-    elevationData: require('../map/6NW24C(e819n830,e820n830).png'),
-    bounds: [114.11603657357644, 22.31447606849338, 114.12186276237765, 22.321250981054725],
+    elevationData:
+      'https://raw.githubusercontent.com/laijackylai/hkterrain/main/map/6NW24C(e819n830%2Ce820n830).png',
+    bounds: [114.01401415218648, 22.409226206938843, 114.02130436516617, 22.41465152964679],
 
     tesselator: tesselator,
     meshMaxError: meshMaxError,
