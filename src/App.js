@@ -18,8 +18,8 @@ const HK_INITIAL_VIEW_STATE = {
   altitude: 1.5,
   bearing: 0,
   height: 945,
-  latitude: 22.31447606849338,
-  longitude: 114.11604080541349,
+  latitude: 22.409226206938843,
+  longitude: 114.01401415218648,
   zoom: 15
 };
 
@@ -70,7 +70,7 @@ function App() {
     // test dsm
     elevationData:
       'https://raw.githubusercontent.com/laijackylai/hkterrain/main/map/6NW24C(e819n830%2Ce820n830).png',
-    bounds: [114.11604080541349, 22.31447606849338, 114.12186276237765, 22.321246651033174],
+    bounds: [114.01401415218648, 22.409226206938843, 114.02130436516617, 22.41465152964679],
 
     tesselator: tesselator,
     meshMaxError: meshMaxError,
