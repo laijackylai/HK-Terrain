@@ -1,16 +1,16 @@
 /* eslint-disable react/prop-types */
 // import { TerrainLoader } from '@loaders.gl/terrain';
-import {AmbientLight, LightingEffect, _SunLight as SunLight} from '@deck.gl/core';
-import {DeckGL} from 'deck.gl';
+import { AmbientLight, LightingEffect, _SunLight as SunLight } from '@deck.gl/core';
+import { DeckGL } from 'deck.gl';
 import moment from 'moment';
 import React from 'react';
-import {hot} from 'react-hot-loader/root';
-import {StaticMap} from 'react-map-gl';
-import {useSelector} from 'react-redux';
+import { hot } from 'react-hot-loader/root';
+import { StaticMap } from 'react-map-gl';
+import { useSelector } from 'react-redux';
 import TerrainLayer from '../terrain-layer/terrain-layer';
 import './App.css';
-import {TileLayer} from '@deck.gl/geo-layers';
-import {PathLayer} from '@deck.gl/layers';
+import { TileLayer } from '@deck.gl/geo-layers';
+import { PathLayer } from '@deck.gl/layers';
 
 const MAPBOX_ACCESS_TOKEN =
   'pk.eyJ1IjoibGFpamFja3lsYWkiLCJhIjoiY2tjZWZucjAzMDd1eDJzcGJvN2tiZHduOSJ9.vWThniHwg9V1wEO3O6xn_g';
@@ -85,11 +85,11 @@ function App() {
   });
 
   const Tiles = new TileLayer({
-    // tileSize: 512,
+    tileSize: 512,
 
     renderSubLayers: (props) => {
       const {
-        bbox: {west, south, east, north}
+        bbox: { west, south, east, north }
       } = props.tile;
 
       return new PathLayer({
