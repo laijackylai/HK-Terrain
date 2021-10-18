@@ -81,6 +81,8 @@ function App() {
   });
 
   const Tiles = new TileLayer({
+    tileSize: 512,
+
     renderSubLayers: (props) => {
       const {
         bbox: {west, south, east, north}
