@@ -74,7 +74,8 @@ function App() {
     // bounds: [114.01401415218648, 22.409226206938843, 114.02130436516617, 22.41465152964679],
 
     // test tides
-    elevationData: 'https://raw.githubusercontent.com/laijackylai/hkterrain/main/map/test.png',
+    elevationData: 'https://raw.githubusercontent.com/laijackylai/hkterrain/main/map/testx100.png',
+    texture: 'https://raw.githubusercontent.com/laijackylai/hkterrain/main/map/mask.png',
     bounds: [113, 21, 115, 23],
 
     // test all terrain
