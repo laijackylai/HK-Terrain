@@ -1,16 +1,16 @@
 /* eslint-disable react/prop-types */
 // import { TerrainLoader } from '@loaders.gl/terrain';
-import {AmbientLight, LightingEffect, _SunLight as SunLight} from '@deck.gl/core';
-import {DeckGL} from 'deck.gl';
+import { AmbientLight, LightingEffect, _SunLight as SunLight } from '@deck.gl/core';
+import { DeckGL } from 'deck.gl';
 import moment from 'moment';
 import React from 'react';
-import {hot} from 'react-hot-loader/root';
-import {StaticMap} from 'react-map-gl';
-import {useSelector} from 'react-redux';
+import { hot } from 'react-hot-loader/root';
+import { StaticMap } from 'react-map-gl';
+import { useSelector } from 'react-redux';
 import TerrainLayer from '../terrain-layer/terrain-layer';
 import './App.css';
-import {TileLayer} from '@deck.gl/geo-layers';
-import {PathLayer} from '@deck.gl/layers';
+import { TileLayer } from '@deck.gl/geo-layers';
+import { PathLayer } from '@deck.gl/layers';
 // import { TerrainLayer } from 'deck.gl';
 
 const MAPBOX_ACCESS_TOKEN =
@@ -64,18 +64,14 @@ function App() {
     // bounds: [-122.5233, 37.6493, -122.3566, 37.8159],
 
     // hk terrain
-    // elevationData:
-    //   'https://raw.githubusercontent.com/laijackylai/loadersgl-tesselector/main/img/hk_terrain_resized_bigger.png',
-    // bounds: [113.825288215, 22.137987659, 114.444071614, 22.57161074],
+    elevationData:
+      'https://raw.githubusercontent.com/laijackylai/loadersgl-tesselector/main/img/hk_terrain_resized_bigger.png',
+    bounds: [113.825288215, 22.137987659, 114.444071614, 22.57161074],
 
     // test dsm
-    // elevationData:
+    // elevationData
     //   'https://raw.githubusercontent.com/laijackylai/hkterrain/main/map/6NW24C(e819n830%2Ce820n830).png',
     // bounds: [114.01401415218648, 22.409226206938843, 114.02130436516617, 22.41465152964679],
-
-    // test tides
-    elevationData: 'https://raw.githubusercontent.com/laijackylai/hkterrain/main/map/test.png',
-    bounds: [113, 21, 115, 23],
 
     // test all terrain
     // elevationData: 'https://raw.githubusercontent.com/laijackylai/hkterrain/main/map/all.png',
@@ -98,7 +94,7 @@ function App() {
 
     renderSubLayers: (props) => {
       const {
-        bbox: {west, south, east, north}
+        bbox: { west, south, east, north }
       } = props.tile;
 
       return new PathLayer({
