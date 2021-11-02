@@ -21,17 +21,29 @@ const HK_INITIAL_VIEW_STATE = {
   height: 945,
   latitude: 22.409226206938843,
   longitude: 114.01401415218648,
-  zoom: 15
+  zoom: 8
 };
+
+const tide_names = [
+  'ww3_hs_20210803000000.png',
+  'ww3_hs_20210803030000.png',
+  'ww3_hs_20210803060000.png',
+  'ww3_hs_20210803090000.png',
+  'ww3_hs_20210803120000.png',
+  'ww3_hs_20210803150000.png',
+  'ww3_hs_20210803180000.png',
+  'ww3_hs_20210803210000.png'
+];
 
 function App() {
   const meshMaxError = useSelector((state) => state.meshMaxError);
   const tesselator = useSelector((state) => state.tesselator);
+  const tidesNum = useSelector((state) => state.tideIndex);
 
   const sunlight = new SunLight({
     timestamp: moment().valueOf(),
     color: [255, 255, 255],
-    intensity: 1.75
+    intensity: 2
   });
 
   const ambientLight = new AmbientLight({
@@ -46,7 +58,7 @@ function App() {
 
   const Terrain = new TerrainLayer({
     elevationDecoder: {
-      rScaler: 100,
+      rScaler: 50,
       gScaler: 0,
       bScaler: 0,
       offset: 0
@@ -74,8 +86,7 @@ function App() {
     // bounds: [114.01401415218648, 22.409226206938843, 114.02130436516617, 22.41465152964679],
 
     // test tides
-    elevationData:
-      'https://raw.githubusercontent.com/laijackylai/hkterrain/main/tides/ww3_hs_20210803000000.png',
+    elevationData: `https://raw.githubusercontent.com/laijackylai/hkterrain/main/tides/${tide_names[tidesNum]}`,
     // texture: 'https://raw.githubusercontent.com/laijackylai/hkterrain/main/map/mask.png',
     bounds: [113, 21, 115, 23],
 

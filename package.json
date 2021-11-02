@@ -31,6 +31,7 @@
     "react-hot-loader": "^4.13.0",
     "react-map-gl": "^6.1.13",
     "react-redux": "^7.2.4",
+    "react-useinterval": "^1.0.2",
     "redux": "^4.1.0",
     "tape-promise": "^4.0.0",
     "terser-webpack-plugin": "^5.1.1"

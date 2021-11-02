@@ -2,7 +2,8 @@ import {Slider} from '@material-ui/core';
 import React from 'react';
 import Dropdown from 'react-bootstrap/Dropdown';
 import {useDispatch, useSelector} from 'react-redux';
-import {setMeshMaxError, setTesselator} from './redux/action';
+import {setMeshMaxError, setTesselator, setTideIndex} from './redux/action';
+import useInterval from 'react-useinterval';
 
 const TesselatorDropdown = () => {
   const dispatch = useDispatch();
@@ -54,12 +55,28 @@ const MeshMaxErrorSlider = () => {
   );
 };
 
-const Controls = () => (
-  <div style={controlStyles}>
-    <TesselatorDropdown />
-    <MeshMaxErrorSlider />
-  </div>
-);
+const Controls = () => {
+  const dispatch = useDispatch();
+  const tideIndex = useSelector((state) => state.tideIndex);
+
+  const increment = () => {
+    const oldIndex = tideIndex;
+    if (tideIndex < 7) {
+      dispatch(setTideIndex(oldIndex + 1));
+    } else {
+      dispatch(setTideIndex(0));
+    }
+  };
+
+  useInterval(increment, 1000);
+
+  return (
+    <div style={controlStyles}>
+      <TesselatorDropdown />
+      <MeshMaxErrorSlider />
+    </div>
+  );
+};
 
 const controlStyles = {
   position: 'absolute',

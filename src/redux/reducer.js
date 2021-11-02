@@ -20,9 +20,20 @@ const tesselatorReducer = (state = 'auto', action) => {
   }
 };
 
+const tideIndexReducer = (state = 0, action) => {
+  switch (action.type) {
+    case 'SET_TIDE_INDEX':
+      state = action.payload;
+      return state;
+    default:
+      return state;
+  }
+};
+
 const rootReducer = combineReducers({
   meshMaxError: meshMaxErrorReducer,
-  tesselator: tesselatorReducer
+  tesselator: tesselatorReducer,
+  tideIndex: tideIndexReducer
 });
 
 export default rootReducer;
