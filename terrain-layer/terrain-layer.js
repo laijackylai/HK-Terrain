@@ -24,6 +24,9 @@ import {load} from '@loaders.gl/core';
 import {TerrainLoader} from '../terrain-loader/src/index';
 import TileLayer from '../tile-layer/tile-layer';
 import {getURLFromTemplate, urlType} from '../tile-layer/utils';
+import isArrayBuffer from 'is-array-buffer';
+// import {getMesh} from '../terrain-loader/src/lib/parse-terrain';
+// import {fromArrayBuffer} from 'geotiff';
 
 const DUMMY_DATA = [1];
 
@@ -78,27 +81,55 @@ function urlTemplateToUpdateTrigger(template) {
  * }
  */
 export default class TerrainLayer extends CompositeLayer {
-  updateState({props, oldProps}) {
+  async updateState({props, oldProps}) {
+    const bbox = await Promise.resolve(props.bounds).then((res) => {
+      return res;
+    });
+
+    props = {...props, bounds: bbox};
+
     const elevationDataChanged = props.elevationData !== oldProps.elevationData;
     if (elevationDataChanged) {
-      const {elevationData} = props;
-      const isTiled =
-        elevationData &&
-        (Array.isArray(elevationData) ||
-          (elevationData.includes('{x}') && elevationData.includes('{y}')));
+      // const { elevationData } = props;
+      // const isTiled =
+      //   elevationData &&
+      //   (Array.isArray(elevationData) ||
+      //     (elevationData.includes('{x}') && elevationData.includes('{y}')));
+      const isTiled = false; // * hard code to false
       this.setState({isTiled});
     }
 
-    // Reloading for single terrain mesh
+    // * Reloading for single terrain mesh
     const shouldReload =
       elevationDataChanged ||
       props.meshMaxError !== oldProps.meshMaxError ||
-      props.elevationDecoder !== oldProps.elevationDecoder ||
-      props.bounds !== oldProps.bounds ||
+      // props.elevationDecoder !== oldProps.elevationDecoder ||
+      // props.bounds !== oldProps.bounds ||
       props.tesselator !== oldProps.tesselator;
-    if (!this.state.isTiled && shouldReload) {
+
+    if (!this.state.isTiled && shouldReload && typeof props.elevationData == 'string') {
       const terrain = this.loadTerrain(props);
       this.setState({terrain});
+    } else {
+      // ! Incorrect terrain returned
+      // * wait for elevationData to resolve and run if it's array buffer
+      Promise.resolve(props.elevationData).then(async (res) => {
+        if (isArrayBuffer(res) && shouldReload) {
+          // const tiff = await fromArrayBuffer(res);
+          // const image = await tiff.getImage();
+          // const data = await image.readRasters();
+          // const imgData = {
+          //   data: data[0],
+          //   width: data.width,
+          //   height: data.height,
+          //   colorSpace: 'srgb'
+          // };
+          // const terrain = new Promise((resolve) => {
+          //   resolve(getMesh(imgData, props));
+          // });
+          // this.setState({ terrain })
+        }
+      });
     }
   }
 

@@ -15,7 +15,8 @@ function getTerrain(imageData, width, height, elevationDecoder, tesselator) {
       const r = imageData[k + 0];
       const g = imageData[k + 1];
       const b = imageData[k + 2];
-      terrain[i + y] = r * rScaler + g * gScaler + b * bScaler + offset;
+      terrain[i + y] = r * rScaler + g * gScaler + b * bScaler + offset; // * default decoder
+      // terrain[i + y] = (r * 256 + g + b / 256) - 32768 // * custom decoder
     }
   }
 
@@ -72,7 +73,7 @@ function getMeshAttributes(vertices, terrain, width, height, bounds) {
  * @param {object} terrainOptions terrain options
  * @returns mesh object
  */
-function getMesh(terrainImage, terrainOptions) {
+export function getMesh(terrainImage, terrainOptions) {
   if (terrainImage === null) {
     return null;
   }
@@ -159,6 +160,7 @@ export default async function loadTerrain(arrayBuffer, options, context) {
   options.image = options.image || {};
   options.image.type = 'data';
   const image = await context.parse(arrayBuffer, options, options.baseUri);
+
   // Extend function to support additional mesh generation options (square grid or delatin)
   return getMesh(image, options.terrain);
 }
