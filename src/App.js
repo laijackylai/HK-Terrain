@@ -1,8 +1,6 @@
 /* eslint-disable react/prop-types */
-import {AmbientLight, LightingEffect, _SunLight as SunLight} from '@deck.gl/core';
-import {DeckGL} from 'deck.gl';
-import moment from 'moment';
-import React, {useCallback, useEffect, useState} from 'react';
+import {DeckGL, WebMercatorViewport} from 'deck.gl';
+import React, {useCallback, useState, useEffect} from 'react';
 import {hot} from 'react-hot-loader/root';
 import {StaticMap} from 'react-map-gl';
 import {useSelector} from 'react-redux';
@@ -12,10 +10,7 @@ import {TileLayer} from '@deck.gl/geo-layers';
 import {PathLayer} from '@deck.gl/layers';
 import {fromArrayBuffer} from 'geotiff';
 import axios from 'axios';
-import {registerLoaders} from '@loaders.gl/core';
-import {TerrainLoader} from '@loaders.gl/terrain';
-
-registerLoaders([TerrainLoader]);
+import {lightingEffect} from './lighting';
 
 const MAPBOX_ACCESS_TOKEN =
   'pk.eyJ1IjoibGFpamFja3lsYWkiLCJhIjoiY2tjZWZucjAzMDd1eDJzcGJvN2tiZHduOSJ9.vWThniHwg9V1wEO3O6xn_g';
@@ -25,7 +20,7 @@ const HK_INITIAL_VIEW_STATE = {
   height: 945,
   latitude: 22.409226206938843,
   longitude: 114.01401415218648,
-  zoom: 8
+  zoom: 12
 };
 
 const tide_names = [
@@ -44,12 +39,10 @@ function App() {
   const tesselator = useSelector((state) => state.tesselator);
   const tidesNum = useSelector((state) => state.tideIndex);
 
-  const [viewState, setViewState] = useState();
+  const [viewBbox, setViewBbox] = useState();
+  const [zoom, setZoom] = useState();
 
-  useEffect(() => {
-    // console.log('terrain data: ', getTiff(filenames[1]))
-    // const data = loadGeoTiff(`http://0.0.0.0:8080/tif/${filenames[0]}.tif`)
-  }, [viewState]);
+  useEffect(() => {}, [viewBbox, zoom]);
 
   // * get geotiff bounding box
   const getTiffBbox = async (fname) => {
@@ -64,50 +57,14 @@ function App() {
     return correct_bbox;
   };
 
-  // * get geotiff data
-  // const getTiff = async (fname) => {
-  //   const res = await axios.get(`http://0.0.0.0:8080/tif/${fname}.tif`, {
-  //     responseType: 'arraybuffer'
-  //   });
-  //   return res.data;
-  //   // const data = await load(`http://0.0.0.0:8080/tif/${fname}.tif`)
-  //   // return data
-  // };
-
-  // * sunlight of current time
-  const sunlight = new SunLight({
-    timestamp: moment().valueOf(),
-    // timestamp: 1554927200000,
-    color: [255, 255, 255],
-    intensity: 2
-  });
-
-  // * ambient light
-  const ambientLight = new AmbientLight({
-    color: [255, 255, 255],
-    // intensity: 0.05
-    intensity: 0.5
-  });
-
-  // * construct lighting effect from sunlight and ambient light
-  const lightingEffect = new LightingEffect({
-    sunlight,
-    ambientLight
-  });
-
   const filenames = [
     '10NE10A(e828n822%3Ae829n822)',
     '10NE10B(e829n822%3Ae830n822)',
     '10NE10C(e828n821%3Ae829n822)'
   ];
+
   const Terrain0 = new TerrainLayer({
     id: 'T0',
-    // elevationDecoder: {
-    //   rScaler: 1,
-    //   gScaler: 0,
-    //   bScaler: 0,
-    //   offset: 0
-    // },
 
     // * terrarium decoder
     elevationDecoder: {
@@ -123,12 +80,7 @@ function App() {
       shininess: 100
     },
 
-    // ! continue here
-    // TODO: the terrain is now rotated by -90 degrees
-    // elevationData: parseGeoTiff(),
-    // elevationData: `http://0.0.0.0:8080/fixed/${filenames[0]}.png`,
-    // elevationData: `http://0.0.0.0:8080/test/terrarium.png`,
-    elevationData: `http://0.0.0.0:8080/test/test.png`,
+    elevationData: `http://0.0.0.0:8080/rgb/${filenames[0]}.png`,
     bounds: getTiffBbox(filenames[0]),
 
     tesselator: tesselator,
@@ -138,13 +90,15 @@ function App() {
       tesselator
     }
   });
+
   const Terrain1 = new TerrainLayer({
     id: 'T1',
+
     elevationDecoder: {
-      rScaler: 1,
-      gScaler: 0,
-      bScaler: 0,
-      offset: 0
+      rScaler: 256,
+      gScaler: 1,
+      bScaler: 1 / 256,
+      offset: -32768
     },
     material: {
       ambient: 0.5,
@@ -153,7 +107,7 @@ function App() {
     },
 
     // elevationData: getTiff(filenames[1]),
-    elevationData: `http://0.0.0.0:8080/fixed/${filenames[1]}.png`,
+    elevationData: `http://0.0.0.0:8080/rgb/${filenames[1]}.png`,
     bounds: getTiffBbox(filenames[1]),
 
     tesselator: tesselator,
@@ -163,14 +117,16 @@ function App() {
       tesselator
     }
   });
+
   const Terrain2 = new TerrainLayer({
     id: 'T2',
     elevationDecoder: {
-      rScaler: 1,
-      gScaler: 0,
-      bScaler: 0,
-      offset: 0
+      rScaler: 256,
+      gScaler: 1,
+      bScaler: 1 / 256,
+      offset: -32768
     },
+
     material: {
       ambient: 0.5,
       diffuse: 0.5,
@@ -178,7 +134,7 @@ function App() {
     },
 
     // elevationData: parseGeoTiff(),
-    elevationData: `http://0.0.0.0:8080/fixed/${filenames[2]}.png`,
+    elevationData: `http://0.0.0.0:8080/rgb/${filenames[2]}.png`,
     bounds: getTiffBbox(filenames[2]),
 
     tesselator: tesselator,
@@ -192,7 +148,7 @@ function App() {
   // * tides layer
   const Tides = new TerrainLayer({
     elevationDecoder: {
-      rScaler: 50,
+      rScaler: 1,
       gScaler: 0,
       bScaler: 0,
       offset: 0
@@ -261,7 +217,12 @@ function App() {
   });
 
   const onViewStateChange = useCallback(({viewState}) => {
-    setViewState(viewState);
+    setZoom(viewState.zoom);
+    const viewport = new WebMercatorViewport(viewState);
+    const nw = viewport.unproject([0, 0]); // North West
+    const se = viewport.unproject([viewport.width, viewport.height]); // South East
+    const viewBbox = [nw[0], se[1], se[0], nw[1]];
+    setViewBbox(viewBbox);
   });
 
   return (
