@@ -1,5 +1,5 @@
 import {Slider} from '@material-ui/core';
-import React from 'react';
+import React, {useState} from 'react';
 import Dropdown from 'react-bootstrap/Dropdown';
 import {useDispatch, useSelector} from 'react-redux';
 import {
@@ -40,6 +40,8 @@ const MeshMaxErrorSlider = () => {
   const dispatch = useDispatch();
   const meshMaxError = useSelector((state) => state.meshMaxError);
 
+  const [displayMaxError, setDisplayMaxError] = useState(meshMaxError);
+
   const onChange = (val) => {
     dispatch(setMeshMaxError(val));
   };
@@ -48,12 +50,13 @@ const MeshMaxErrorSlider = () => {
     <div>
       <div style={meshTextStyle}>Max Mesh Error</div>
       <Slider
-        value={meshMaxError}
+        value={displayMaxError}
         min={0}
         max={50}
         step={1}
         valueLabelDisplay="on"
-        onChange={(event, value) => onChange(value)}
+        onChange={(event, value) => setDisplayMaxError(value)}
+        onChangeCommitted={(event, value) => onChange(value)}
       />
     </div>
   );
