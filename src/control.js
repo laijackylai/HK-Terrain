@@ -1,38 +1,56 @@
-import {Slider} from '@material-ui/core';
-import React, {useState} from 'react';
-import Dropdown from 'react-bootstrap/Dropdown';
-import {useDispatch, useSelector} from 'react-redux';
 import {
-  setMeshMaxError,
-  setTesselator
-  // setTideIndex
-} from './redux/action';
-// import useInterval from 'react-useinterval';
+  FormControl,
+  FormControlLabel,
+  FormLabel,
+  Radio,
+  RadioGroup,
+  Slider
+} from '@material-ui/core';
+import React from 'react';
+import {useDispatch, useSelector} from 'react-redux';
+import {setMeshMaxError, setTesselator, setTideIndex} from './redux/action';
+import useInterval from 'react-useinterval';
 
-const TesselatorDropdown = () => {
+const Tesselator = () => {
   const dispatch = useDispatch();
-
-  const onSelect = (tesselator) => {
-    dispatch(setTesselator(tesselator));
-  };
+  const tesselator = useSelector((state) => state.tesselator);
 
   return (
-    <Dropdown onSelect={onSelect} style={{marginBottom: 20}}>
-      <Dropdown.Toggle variant="success" id="dropdown-basic">
-        Tesselator
-      </Dropdown.Toggle>
-      <Dropdown.Menu>
-        <Dropdown.Item eventKey="auto">
-          <div style={textStyle}>Auto</div>
-        </Dropdown.Item>
-        <Dropdown.Item eventKey="martini">
-          <div style={textStyle}>Martini</div>
-        </Dropdown.Item>
-        <Dropdown.Item eventKey="delatin">
-          <div style={textStyle}>Delatin</div>
-        </Dropdown.Item>
-      </Dropdown.Menu>
-    </Dropdown>
+    <FormControl
+      style={{
+        backgroundColor: 'white',
+        borderRadius: 10,
+        paddingLeft: '12px',
+        paddingRight: '12px',
+        paddingTop: '7px',
+        paddingBottom: '5px'
+      }}
+    >
+      <FormLabel id="demo-radio-buttons-group-label">Tesselator</FormLabel>
+      <RadioGroup
+        // aria-labelledby="demo-radio-buttons-group-label"
+        defaultValue="auto"
+        name="radio-buttons-group"
+        value={tesselator}
+        onChange={(e, val) => dispatch(setTesselator(val))}
+      >
+        <FormControlLabel
+          value="auto"
+          control={<Radio size="small" color="primary" />}
+          label={<div>Auto</div>}
+        />
+        <FormControlLabel
+          value="martini"
+          control={<Radio size="small" color="primary" />}
+          label={<div>Martini</div>}
+        />
+        <FormControlLabel
+          value="delatin"
+          control={<Radio size="small" color="primary" />}
+          label={<div>Delatin</div>}
+        />
+      </RadioGroup>
+    </FormControl>
   );
 };
 
@@ -40,46 +58,56 @@ const MeshMaxErrorSlider = () => {
   const dispatch = useDispatch();
   const meshMaxError = useSelector((state) => state.meshMaxError);
 
-  const [displayMaxError, setDisplayMaxError] = useState(meshMaxError);
-
-  const onChange = (val) => {
-    dispatch(setMeshMaxError(val));
-  };
+  // const [displayMaxError, setDisplayMaxError] = useState(meshMaxError);
 
   return (
-    <div>
-      <div style={meshTextStyle}>Max Mesh Error</div>
+    <div
+      style={{
+        fontFamily: 'Ubuntu',
+        backgroundColor: 'white',
+        borderRadius: 10,
+        paddingLeft: '12px',
+        paddingRight: '12px',
+        paddingTop: '7px',
+        paddingBottom: '7px',
+        color: '#292929'
+      }}
+    >
+      <div>Max Mesh Error</div>
       <Slider
-        value={displayMaxError}
+        value={meshMaxError}
         min={0}
         max={50}
         step={1}
-        valueLabelDisplay="on"
-        onChange={(event, value) => setDisplayMaxError(value)}
-        onChangeCommitted={(event, value) => onChange(value)}
+        // valueLabelDisplay="on"
+        // onChange={(event, value) => setDisplayMaxError(value)}
+        onChangeCommitted={(event, value) => {
+          dispatch(setMeshMaxError(value));
+        }}
       />
+      <div>± {meshMaxError} m</div>
     </div>
   );
 };
 
 const Controls = () => {
-  // const dispatch = useDispatch();
-  // const tideIndex = useSelector((state) => state.tideIndex);
+  const dispatch = useDispatch();
+  const tideIndex = useSelector((state) => state.tideIndex);
 
-  // const increment = () => {
-  //   const oldIndex = tideIndex;
-  //   if (tideIndex < 7) {
-  //     dispatch(setTideIndex(oldIndex + 1));
-  //   } else {
-  //     dispatch(setTideIndex(0));
-  //   }
-  // };
+  const increment = () => {
+    const oldIndex = tideIndex;
+    if (tideIndex < 7) {
+      dispatch(setTideIndex(oldIndex + 1));
+    } else {
+      dispatch(setTideIndex(0));
+    }
+  };
 
-  // useInterval(increment, 1000);
+  useInterval(increment, 1000);
 
   return (
     <div style={controlStyles}>
-      <TesselatorDropdown />
+      <Tesselator />
       <MeshMaxErrorSlider />
     </div>
   );
@@ -87,18 +115,12 @@ const Controls = () => {
 
 const controlStyles = {
   position: 'absolute',
-  top: '10vh',
-  right: '10vw',
-  flexDirection: 'column'
-};
-
-const textStyle = {
-  color: 'white'
-};
-
-const meshTextStyle = {
-  color: 'white',
-  marginBottom: '5vh'
+  bottom: '3vh',
+  right: '3vh',
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'flex-end',
+  gap: '10px'
 };
 
 export default Controls;

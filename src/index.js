@@ -1,10 +1,18 @@
+import {createMuiTheme, MuiThemeProvider} from '@material-ui/core';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {Provider} from 'react-redux';
 import {createStore} from 'redux';
 import App from './App';
 import Controls from './control';
+import Navigation from './navigation';
 import rootReducer from './redux/reducer';
+
+const THEME = createMuiTheme({
+  typography: {
+    fontFamily: ['Ubuntu']
+  }
+});
 
 const store = createStore(
   rootReducer,
@@ -13,10 +21,13 @@ const store = createStore(
 
 ReactDOM.render(
   <React.StrictMode>
-    <Provider store={store}>
-      <App />
-      <Controls />
-    </Provider>
+    <MuiThemeProvider theme={THEME}>
+      <Provider store={store}>
+        <App />
+        <Controls />
+        <Navigation />
+      </Provider>
+    </MuiThemeProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );

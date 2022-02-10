@@ -30,10 +30,49 @@ const tideIndexReducer = (state = 0, action) => {
   }
 };
 
+const bearingReducer = (state = 0, action) => {
+  switch (action.type) {
+    case 'SET_BEARING':
+      state = action.payload;
+      return state;
+    default:
+      return state;
+  }
+};
+
+const resetViewportFlagReducer = (state = false, action) => {
+  switch (action.type) {
+    case 'RESET_VIEWPORT':
+      state = action.payload;
+      return state;
+    default:
+      return state;
+  }
+};
+
+const zoomReducer = (state = 9.803172945712367, action) => {
+  switch (action.type) {
+    case 'SET_ZOOM':
+      state = action.payload;
+      return state;
+    case 'ZOOM_IN':
+      state = state + 1;
+      return state;
+    case 'ZOOM_OUT':
+      state = state - 1;
+      return state;
+    default:
+      return state;
+  }
+};
+
 const rootReducer = combineReducers({
   meshMaxError: meshMaxErrorReducer,
   tesselator: tesselatorReducer,
-  tideIndex: tideIndexReducer
+  tideIndex: tideIndexReducer,
+  bearing: bearingReducer,
+  resetViewportFlag: resetViewportFlagReducer,
+  zoom: zoomReducer
 });
 
 export default rootReducer;
