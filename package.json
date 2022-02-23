@@ -28,6 +28,7 @@
     "deck.gl": "^8.4.15",
     "geotiff": "^1.0.8",
     "is-array-buffer": "^2.0.0",
+    "json-loader": "^0.5.7",
     "math.gl": "^3.4.2",
     "moment": "^2.29.1",
     "papaparse": "^5.3.1",

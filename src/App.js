@@ -2,6 +2,7 @@
 import {
   DeckGL,
   FlyToInterpolator,
+  GeoJsonLayer,
   TileLayer
   // WebMercatorViewport
 } from 'deck.gl';
@@ -11,6 +12,9 @@ import {StaticMap} from 'react-map-gl';
 import {useDispatch, useSelector} from 'react-redux';
 import TerrainLayer from '../terrain-layer/terrain-layer';
 import './App.css';
+import coast from '../data/Hong_Kong_18_Districts.geojson';
+import sea from '../img/sea.png';
+
 // import { TileLayer } from '@deck.gl/geo-layers';
 // import { PathLayer } from '@deck.gl/layers';
 // import { fromArrayBuffer } from 'geotiff';
@@ -492,10 +496,10 @@ function App() {
     //   'https://raw.githubusercontent.com/laijackylai/hkterrain/main/map/6NW24C(e819n830%2Ce820n830).png',
     // bounds: [114.01401415218648, 22.409226206938843, 114.02130436516617, 22.41465152964679],
 
-    // test tides
     elevationData: `https://raw.githubusercontent.com/laijackylai/hkterrain/main/tides/${tide_names[tidesNum]}`,
+    texture: sea,
     // texture: 'https://raw.githubusercontent.com/laijackylai/hkterrain/main/map/mask.png',
-    texture: 'https://i.pinimg.com/564x/67/ae/68/67ae6836ad6b9b655f64bc24c874e69a.jpg',
+    // texture: 'https://raw.githubusercontent.com/laijackylai/hkterrain/main/img/wave.jpg',
     bounds: [113, 21, 115, 23],
 
     tesselator: tesselator,
@@ -586,6 +590,23 @@ function App() {
     }
   });
 
+  const coastLine = new GeoJsonLayer({
+    id: 'coast-line',
+    data: coast,
+    // pickable: false,
+    // stroked: false,
+    filled: false,
+    // extruded: true,
+    // wireframe: true,
+    getLineWidth: 1,
+    lineWidthScale: 5,
+    lineWidthMinPixels: 1,
+    getLineColor: [255, 0, 0],
+    // lineCapRounded: true,
+    // getElevation: 30,
+    getPolygonOffset: () => [0, -10000]
+  });
+
   const onViewStateChange = useCallback(({viewState}) => {
     setViewState(viewState);
     dispatch(setBearing(viewState.bearing));
@@ -601,7 +622,7 @@ function App() {
     <DeckGL
       controller
       initialViewState={initialViewState}
-      layers={[tiles, Tides]}
+      layers={[tiles, Tides, coastLine]}
       effects={[lightingEffect]}
       onViewStateChange={onViewStateChange}
     >
