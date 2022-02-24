@@ -497,7 +497,7 @@ function App() {
     // bounds: [114.01401415218648, 22.409226206938843, 114.02130436516617, 22.41465152964679],
 
     elevationData: `https://raw.githubusercontent.com/laijackylai/hkterrain/main/tides/${tide_names[tidesNum]}`,
-    texture: 'https://raw.githubusercontent.com/laijackylai/hkterrain/main/img/sea.png', // ! test texture
+    texture: 'https://raw.githubusercontent.com/laijackylai/hkterrain/main/img/sea_texture.png', // ! test texture
     // texture: 'https://raw.githubusercontent.com/laijackylai/hkterrain/main/map/mask.png',
     // texture: 'https://raw.githubusercontent.com/laijackylai/hkterrain/main/img/wave.jpg',
     bounds: [113, 21, 115, 23],
