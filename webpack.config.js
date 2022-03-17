@@ -4,6 +4,8 @@ const Dotenv = require('dotenv-webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 
+const PORT = process.env.PORT || 3000;
+
 module.exports = {
   entry: ['react-hot-loader/patch', path.join(__dirname, 'src', 'index.js')],
   output: {path: path.join(__dirname, 'build'), filename: 'index.bundle.js', publicPath: ''},
@@ -18,7 +20,7 @@ module.exports = {
   devServer: {
     contentBase: path.join(__dirname, 'src'),
     host: '0.0.0.0',
-    port: process.env.PORT || 3000,
+    port: PORT || 3000,
     // disableHostCheck: true,
     watchOptions: {
       poll: true
