@@ -21,7 +21,7 @@ module.exports = {
     contentBase: path.join(__dirname, 'src'),
     host: '0.0.0.0',
     port: PORT || 3000,
-    // disableHostCheck: true,
+    disableHostCheck: true,
     watchOptions: {
       poll: true
     },
