@@ -6,7 +6,7 @@ import {
   TileLayer
   // WebMercatorViewport
 } from 'deck.gl';
-import React, {useCallback, useState, useEffect} from 'react';
+import React, {useCallback, useState, useEffect, useRef} from 'react';
 import {hot} from 'react-hot-loader/root';
 import {StaticMap} from 'react-map-gl';
 import {useDispatch, useSelector} from 'react-redux';
@@ -20,7 +20,7 @@ import coast from '../data/Hong_Kong_18_Districts.geojson';
 // import { fromArrayBuffer } from 'geotiff';
 // import axios from 'axios';
 import {lightingEffect} from './lighting';
-import {setBearing, resetViewport, setZoom} from './redux/action';
+import {setBearing, resetViewport, setZoom, setMouseEvent} from './redux/action';
 
 const MAPBOX_ACCESS_TOKEN =
   'pk.eyJ1IjoibGFpamFja3lsYWkiLCJhIjoiY2tjZWZucjAzMDd1eDJzcGJvN2tiZHduOSJ9.vWThniHwg9V1wEO3O6xn_g';
@@ -88,9 +88,12 @@ function App() {
   const tidesNum = useSelector((state) => state.tideIndex);
   const resetViewportFlag = useSelector((state) => state.resetViewportFlag);
   const zoom = useSelector((state) => state.zoom);
+  const texture = useSelector((state) => state.texture);
 
   const [initialViewState, setInitialViewState] = useState(ZOOMED_OUT);
   const [viewState, setViewState] = useState(initialViewState);
+
+  const deckRef = useRef(null);
 
   // ! just to play around
   // setTimeout(() => {
@@ -538,6 +541,25 @@ function App() {
   //   }
   // });
 
+  const textureSelect = (props) => {
+    const osmUrl = `https://a.tile.openstreetmap.org/${props.tile.z}/${props.tile.x}/${props.tile.y}.png`;
+    const humanitarianUrl = `http://a.tile.openstreetmap.fr/hot/${props.tile.z}/${props.tile.x}/${props.tile.y}.png`;
+    const landscapeUrl = `https://tile.thunderforest.com/landscape/${props.tile.z}/${props.tile.x}/${props.tile.y}.png?apikey=ba0c792961e74548ac6dc23f329d9820`;
+    const topoUrl = `https://a.tile.opentopomap.org/${props.tile.z}/${props.tile.x}/${props.tile.y}.png`;
+
+    // * referencing Google Map's approach
+    // * to speed up texture change, query all textures first so that they will be in cache when need
+    // * but maybe too much textures to query, that may hinder performance as well
+    // axios.all([osmUrl, humanitarianUrl, landscapeUrl, topoUrl]).catch(() => null)
+
+    if (texture == 'osm') return osmUrl;
+    if (texture == 'humanitarian') return humanitarianUrl;
+    if (texture == 'landscape') return landscapeUrl;
+    if (texture == 'topo') return topoUrl;
+    if (texture == 'source')
+      return `http://127.0.0.1:8080/tiles/png/${props.tile.z}/${props.tile.x}-${props.tile.y}-${props.tile.z}.png`;
+  };
+
   const tiles = new TileLayer({
     // https://wiki.openstreetmap.org/wiki/Slippy_map_tilenames#Tile_servers
     // data: 'https://a.tile.openstreetmap.org/{z}/{x}/{y}.png', // ! for testing
@@ -574,10 +596,11 @@ function App() {
           shininess: 100
         },
 
-        elevationData: `http://0.0.0.0:8080/tiles/png/${props.tile.z}/${props.tile.x}-${props.tile.y}-${props.tile.z}.png`,
+        elevationData: `http://127.0.0.1:8080/tiles/png/${props.tile.z}/${props.tile.x}-${props.tile.y}-${props.tile.z}.png`,
         bounds: [west, south, east, north],
 
-        texture: `https://a.tile.openstreetmap.org/${props.tile.z}/${props.tile.x}/${props.tile.y}.png`,
+        // * text texture switch
+        texture: textureSelect(props),
 
         tesselator: tesselator,
         meshMaxError: meshMaxError
@@ -586,10 +609,13 @@ function App() {
 
     updateTriggers: {
       meshMaxError,
-      tesselator
+      tesselator,
+      texture
     }
   });
 
+  // TODO: can try to use kyle barron's library to snap vector features to the terrain (https://github.com/kylebarron/snap-to-tin)
+  // * now the coastline are snapped to the seafloor, i.e. 0m
   const coastLine = new GeoJsonLayer({
     id: 'coast-line',
     data: coast,
@@ -601,10 +627,14 @@ function App() {
     getLineWidth: 1,
     lineWidthScale: 5,
     lineWidthMinPixels: 1,
-    getLineColor: [255, 0, 0],
+    getLineColor: [219, 26, 32],
     // lineCapRounded: true,
     // getElevation: 30,
-    getPolygonOffset: () => [0, -10000]
+    // getPolygonOffset: () => [0, -10000], // * temp solution
+    parameters: {
+      // * turn off depth test to get rid of z-fighting for this layer
+      depthTest: false
+    }
   });
 
   const onViewStateChange = useCallback(({viewState}) => {
@@ -625,6 +655,9 @@ function App() {
       layers={[tiles, Tides, coastLine]}
       effects={[lightingEffect]}
       onViewStateChange={onViewStateChange}
+      _pickable={false}
+      ref={deckRef}
+      onHover={(e) => dispatch(setMouseEvent(e))}
     >
       <StaticMap
         mapboxApiAccessToken={MAPBOX_ACCESS_TOKEN}

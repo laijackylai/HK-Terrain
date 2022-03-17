@@ -35,3 +35,13 @@ export const zoomIn = () => ({
 export const zoomOut = () => ({
   type: 'ZOOM_OUT'
 });
+
+export const setTexture = (t) => ({
+  type: 'SET_TEXTURE',
+  payload: t
+});
+
+export const setMouseEvent = (e) => ({
+  type: 'SET_MOUSE_EVENT',
+  payload: e
+});

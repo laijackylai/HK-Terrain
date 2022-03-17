@@ -66,13 +66,35 @@ const zoomReducer = (state = 9.803172945712367, action) => {
   }
 };
 
+const textureReducer = (state = 'osm', action) => {
+  switch (action.type) {
+    case 'SET_TEXTURE':
+      state = action.payload;
+      return state;
+    default:
+      return state;
+  }
+};
+
+const mouseEventReducer = (state = null, action) => {
+  switch (action.type) {
+    case 'SET_MOUSE_EVENT':
+      state = action.payload;
+      return state;
+    default:
+      return state;
+  }
+};
+
 const rootReducer = combineReducers({
   meshMaxError: meshMaxErrorReducer,
   tesselator: tesselatorReducer,
   tideIndex: tideIndexReducer,
   bearing: bearingReducer,
   resetViewportFlag: resetViewportFlagReducer,
-  zoom: zoomReducer
+  zoom: zoomReducer,
+  texture: textureReducer,
+  mouseEvent: mouseEventReducer
 });
 
 export default rootReducer;

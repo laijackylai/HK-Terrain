@@ -5,8 +5,10 @@ import {Provider} from 'react-redux';
 import {createStore} from 'redux';
 import App from './App';
 import Controls from './control';
+import Info from './info';
 import Navigation from './navigation';
 import rootReducer from './redux/reducer';
+import TextureSelect from './textureSelect';
 
 const THEME = createMuiTheme({
   typography: {
@@ -26,6 +28,8 @@ ReactDOM.render(
         <App />
         <Controls />
         <Navigation />
+        <TextureSelect />
+        <Info />
       </Provider>
     </MuiThemeProvider>
   </React.StrictMode>,
