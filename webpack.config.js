@@ -19,7 +19,7 @@ module.exports = {
   devtool: 'eval',
   devServer: {
     contentBase: path.join(__dirname, 'src'),
-    host: '0.0.0.0',
+    // host: '0.0.0.0',
     port: PORT || 3000,
     disableHostCheck: true,
     watchOptions: {
