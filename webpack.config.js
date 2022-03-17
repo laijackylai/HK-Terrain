@@ -18,7 +18,7 @@ module.exports = {
   devServer: {
     contentBase: path.join(__dirname, 'src'),
     host: '0.0.0.0',
-    port: 3000,
+    port: process.env.PORT || 3000,
     // disableHostCheck: true,
     watchOptions: {
       poll: true
