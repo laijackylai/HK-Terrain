@@ -33,7 +33,7 @@ module.exports = {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
         enforce: 'pre',
-        use: ['babel-loader', 'source-map-loader']
+        use: ['babel-loader?cacheDirectory', 'source-map-loader']
       },
       {
         test: /\.(css|scss)$/,
@@ -41,10 +41,12 @@ module.exports = {
       },
       {
         test: /\.(jpg|jpeg|png|gif|mp3|svg)$/,
+        include: path.resolve(__dirname, 'img'),
         use: ['file-loader']
       },
       {
         test: /\.(json|geojson)$/,
+        include: path.resolve(__dirname, 'data'),
         use: ['json-loader']
       }
     ]

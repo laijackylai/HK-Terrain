@@ -45,3 +45,8 @@ export const setMouseEvent = (e) => ({
   type: 'SET_MOUSE_EVENT',
   payload: e
 });
+
+export const setTidesVisibility = (b) => ({
+  type: 'SET_TIDES_VISIBILITY',
+  payload: b
+});

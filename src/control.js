@@ -1,4 +1,5 @@
 import {
+  Checkbox,
   FormControl,
   FormControlLabel,
   FormLabel,
@@ -8,8 +9,9 @@ import {
 } from '@material-ui/core';
 import React from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {setMeshMaxError, setTesselator, setTideIndex} from './redux/action';
+import {setMeshMaxError, setTesselator, setTideIndex, setTidesVisibility} from './redux/action';
 import useInterval from 'react-useinterval';
+import useWindowDimensions from './windowDimensions';
 
 const Tesselator = () => {
   const dispatch = useDispatch();
@@ -90,8 +92,39 @@ const MeshMaxErrorSlider = () => {
   );
 };
 
+const TidesVisibility = () => {
+  const dispatch = useDispatch();
+  const {width} = useWindowDimensions();
+  const tidesVisibility = useSelector((state) => state.tidesVisibility);
+
+  return (
+    <div
+      style={{
+        backgroundColor: 'white',
+        borderRadius: 10,
+        display: 'flex',
+        justifyContent: 'flex-start',
+        alignItems: 'center'
+      }}
+    >
+      <FormControlLabel
+        style={{paddingLeft: 0.01 * width}}
+        control={
+          <Checkbox
+            onChange={(e, i) => dispatch(setTidesVisibility(i))}
+            color="primary"
+            checked={tidesVisibility}
+          />
+        }
+        label="Tides"
+      />
+    </div>
+  );
+};
+
 const Controls = () => {
   const dispatch = useDispatch();
+  // const tidesVisibility = useSelector(state => state.tidesVisibility)
   const tideIndex = useSelector((state) => state.tideIndex);
 
   const increment = () => {
@@ -103,10 +136,11 @@ const Controls = () => {
     }
   };
 
-  useInterval(increment, 1000);
+  useInterval(increment, 100);
 
   return (
     <div style={controlStyles}>
+      <TidesVisibility />
       <Tesselator />
       <MeshMaxErrorSlider />
     </div>

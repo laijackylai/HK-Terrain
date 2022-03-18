@@ -89,6 +89,7 @@ function App() {
   const resetViewportFlag = useSelector((state) => state.resetViewportFlag);
   const zoom = useSelector((state) => state.zoom);
   const texture = useSelector((state) => state.texture);
+  const tidesVisibility = useSelector((state) => state.tidesVisibility);
 
   const [initialViewState, setInitialViewState] = useState(ZOOMED_OUT);
   const [viewState, setViewState] = useState(initialViewState);
@@ -471,6 +472,7 @@ function App() {
 
   // * tides layer
   const Tides = new TerrainLayer({
+    visible: tidesVisibility,
     elevationDecoder: {
       rScaler: 1,
       gScaler: 0,
@@ -509,7 +511,8 @@ function App() {
     meshMaxError: meshMaxError,
     updateTriggers: {
       meshMaxError,
-      tesselator
+      tesselator,
+      tidesVisibility
     }
   });
 

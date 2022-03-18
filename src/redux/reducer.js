@@ -86,6 +86,16 @@ const mouseEventReducer = (state = null, action) => {
   }
 };
 
+const tidesVisibilityReducer = (state = true, action) => {
+  switch (action.type) {
+    case 'SET_TIDES_VISIBILITY':
+      state = action.payload;
+      return state;
+    default:
+      return state;
+  }
+};
+
 const rootReducer = combineReducers({
   meshMaxError: meshMaxErrorReducer,
   tesselator: tesselatorReducer,
@@ -94,7 +104,8 @@ const rootReducer = combineReducers({
   resetViewportFlag: resetViewportFlagReducer,
   zoom: zoomReducer,
   texture: textureReducer,
-  mouseEvent: mouseEventReducer
+  mouseEvent: mouseEventReducer,
+  tidesVisibility: tidesVisibilityReducer
 });
 
 export default rootReducer;
