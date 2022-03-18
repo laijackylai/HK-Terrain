@@ -8,13 +8,15 @@
     "start": "webpack serve",
     "format": "prettier-eslint --eslint-config-path ./.eslintrc.js --write '**/*.js'",
     "lint": "eslint . --ext js",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "postinstall": "patch-package"
   },
   "license": "ISC",
   "dependencies": {
     "@deck.gl/geo-layers": "^8.6.8",
     "@deck.gl/mesh-layers": "^8.4.15",
     "@hot-loader/react-dom": "^17.0.1",
+    "@kylebarron/snap-to-tin": "^0.2.0",
     "@loaders.gl/core": "^2.3.13",
     "@loaders.gl/geotiff": "^3.0.12",
     "@loaders.gl/images": "^2.3.13",
@@ -64,12 +66,16 @@
     "html-webpack-plugin": "^5.3.1",
     "husky": "^6.0.0",
     "image-webpack-loader": "^7.0.1",
+    "patch-package": "^6.4.7",
     "path": "^0.12.7",
+    "postinstall-postinstall": "^2.1.0",
     "prettier": "^2.3.0",
     "prettier-eslint": "^12.0.0",
     "prettier-eslint-cli": "^5.0.1",
     "source-map-loader": "^2.0.1",
     "style-loader": "^2.0.0",
+    "ts-loader": "^9.2.8",
+    "typescript": "^4.6.2",
     "webpack": "^5.35.0",
     "webpack-cli": "^4.6.0",
     "webpack-dev-server": "^3.11.2"

@@ -136,7 +136,7 @@ const Controls = () => {
     }
   };
 
-  useInterval(increment, 100);
+  useInterval(increment, 1000);
 
   return (
     <div style={controlStyles}>

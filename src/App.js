@@ -474,7 +474,7 @@ function App() {
   const Tides = new TerrainLayer({
     visible: tidesVisibility,
     elevationDecoder: {
-      rScaler: 1,
+      rScaler: 100,
       gScaler: 0,
       bScaler: 0,
       offset: 0

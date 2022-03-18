@@ -24,6 +24,7 @@ import {load} from '@loaders.gl/core';
 import {TerrainLoader} from '../terrain-loader/src/index';
 import TileLayer from '../tile-layer/tile-layer';
 import {getURLFromTemplate, urlType} from '../tile-layer/utils';
+import SnapFeatures from '@kylebarron/snap-to-tin/src/index.ts';
 
 const DUMMY_DATA = [1];
 
@@ -105,11 +106,19 @@ export default class TerrainLayer extends CompositeLayer {
       props = {...props, bounds: bbox};
 
       const terrain = this.loadTerrain(props);
+
       this.setState({terrain});
     }
   }
 
-  loadTerrain({elevationData, bounds, elevationDecoder, meshMaxError, workerUrl, tesselator}) {
+  async loadTerrain({
+    elevationData,
+    bounds,
+    elevationDecoder,
+    meshMaxError,
+    workerUrl,
+    tesselator
+  }) {
     if (!elevationData) {
       return null;
     }
@@ -124,7 +133,22 @@ export default class TerrainLayer extends CompositeLayer {
     if (workerUrl) {
       options.terrain.workerUrl = workerUrl;
     }
-    return load(elevationData, this.props.loaders, options);
+    const terrain = await load(elevationData, this.props.loaders, options);
+
+    // ! test snap-to-tin
+
+    const snap = new SnapFeatures({
+      // triples of position indices that make up the faces of the terrain
+      indices: terrain.indices.value,
+      // x, y, z positions in space of each index
+      positions: terrain.attributes.POSITION.value,
+      // Optional bounding box to clip features to
+      bounds: [0, 0, 1, 1]
+    });
+    console.log(snap);
+
+    // ! end test
+    return terrain;
   }
 
   getTiledTerrainData(tile) {
@@ -149,6 +173,7 @@ export default class TerrainLayer extends CompositeLayer {
       meshMaxError,
       workerUrl
     });
+
     const surface = textureUrl
       ? // If surface image fails to load, the tile should still be displayed
         load(textureUrl).catch(() => null)

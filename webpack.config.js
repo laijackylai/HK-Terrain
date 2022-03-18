@@ -14,7 +14,8 @@ module.exports = {
     modules: [path.resolve(__dirname, 'src'), 'node_modules'],
     alias: {
       'react-dom': '@hot-loader/react-dom'
-    }
+    },
+    extensions: ['.tsx', '.ts', '.js']
   },
   devtool: 'eval',
   devServer: {
@@ -34,6 +35,11 @@ module.exports = {
         exclude: /node_modules/,
         enforce: 'pre',
         use: ['babel-loader?cacheDirectory', 'source-map-loader']
+      },
+      {
+        test: /\.tsx?$/,
+        include: path.resolve(__dirname, 'node_modules/@kylebarron/snap-to-tin'),
+        use: ['ts-loader']
       },
       {
         test: /\.(css|scss)$/,

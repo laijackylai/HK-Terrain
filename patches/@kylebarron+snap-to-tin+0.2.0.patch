@@ -1,0 +1,12 @@
+diff --git a/node_modules/@kylebarron/snap-to-tin/tsconfig.json b/node_modules/@kylebarron/snap-to-tin/tsconfig.json
+index 85ad938..6b13ab5 100644
+--- a/node_modules/@kylebarron/snap-to-tin/tsconfig.json
++++ b/node_modules/@kylebarron/snap-to-tin/tsconfig.json
+@@ -1,6 +1,7 @@
+ {
+   "compilerOptions": {
+     "moduleResolution": "node",
++    "allowSyntheticDefaultImports": true,
+     "outDir": "./lib",
+     "allowJs": true,
+     "target": "es2015",
