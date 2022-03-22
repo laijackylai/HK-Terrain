@@ -24,7 +24,7 @@ import {load} from '@loaders.gl/core';
 import {TerrainLoader} from '../terrain-loader/src/index';
 import TileLayer from '../tile-layer/tile-layer';
 import {getURLFromTemplate, urlType} from '../tile-layer/utils';
-import SnapFeatures from '@kylebarron/snap-to-tin/src/index.ts';
+import SnapFeatures from '@kylebarron/snap-to-tin';
 
 const DUMMY_DATA = [1];
 
@@ -136,7 +136,6 @@ export default class TerrainLayer extends CompositeLayer {
     const terrain = await load(elevationData, this.props.loaders, options);
 
     // ! test snap-to-tin
-
     const snap = new SnapFeatures({
       // triples of position indices that make up the faces of the terrain
       indices: terrain.indices.value,
@@ -146,8 +145,8 @@ export default class TerrainLayer extends CompositeLayer {
       bounds: [0, 0, 1, 1]
     });
     console.log(snap);
-
     // ! end test
+
     return terrain;
   }
 

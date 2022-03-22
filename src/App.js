@@ -474,7 +474,7 @@ function App() {
   const Tides = new TerrainLayer({
     visible: tidesVisibility,
     elevationDecoder: {
-      rScaler: 100,
+      rScaler: 1,
       gScaler: 0,
       bScaler: 0,
       offset: 0
@@ -584,7 +584,7 @@ function App() {
       //   bounds: [west, south, east, north]
       // });
 
-      return new TerrainLayer(props, {
+      const terrainLayer = new TerrainLayer(props, {
         // * terrarium decoder
         elevationDecoder: {
           rScaler: 256,
@@ -608,6 +608,29 @@ function App() {
         tesselator: tesselator,
         meshMaxError: meshMaxError
       });
+
+      // ! test OSM buildings layer
+      // * https://osmbuildings.org/documentation/data/
+      const buildingsLayer =
+        props.tile.z == 15 &&
+        new GeoJsonLayer(props, {
+          id: '3d-buildings',
+          data: `https://a.data.osmbuildings.org/0.2/anonymous/tile/15/${props.tile.x}/${props.tile.y}.json`, // ! wrong format
+          filled: false,
+          // extruded: true,
+          // wireframe: true,
+          getLineWidth: 1,
+          lineWidthScale: 5,
+          lineWidthMinPixels: 1,
+          getLineColor: [219, 26, 32],
+          parameters: {
+            depthTest: false
+          }
+        });
+      // console.log(buildingsLayer)
+      // ! end test
+
+      return [terrainLayer, buildingsLayer];
     },
 
     updateTriggers: {

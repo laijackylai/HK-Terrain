@@ -16,7 +16,7 @@
     "@deck.gl/geo-layers": "^8.6.8",
     "@deck.gl/mesh-layers": "^8.4.15",
     "@hot-loader/react-dom": "^17.0.1",
-    "@kylebarron/snap-to-tin": "^0.2.0",
+    "@kylebarron/snap-to-tin": "^0.2.1",
     "@loaders.gl/core": "^2.3.13",
     "@loaders.gl/geotiff": "^3.0.12",
     "@loaders.gl/images": "^2.3.13",
