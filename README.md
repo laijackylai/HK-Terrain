@@ -10,5 +10,5 @@ Install the required packages using npm or yarn
 `npm install --global yarn && yarn`
 
 Start the project via
-`npm run webpack && npm start`
+`yarn start`
 Go to http://0.0.0.0:3000/ or http://localhost:3000
