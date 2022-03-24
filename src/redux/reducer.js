@@ -66,7 +66,7 @@ const zoomReducer = (state = 9.803172945712367, action) => {
   }
 };
 
-const textureReducer = (state = 'osm', action) => {
+const textureReducer = (state = 'landscape', action) => {
   switch (action.type) {
     case 'SET_TEXTURE':
       state = action.payload;

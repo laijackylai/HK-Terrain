@@ -1,11 +1,5 @@
 /* eslint-disable react/prop-types */
-import {
-  DeckGL,
-  FlyToInterpolator,
-  GeoJsonLayer,
-  TileLayer
-  // WebMercatorViewport
-} from 'deck.gl';
+import {DeckGL, FlyToInterpolator, GeoJsonLayer, TileLayer} from 'deck.gl';
 import React, {useCallback, useState, useEffect, useRef} from 'react';
 import {hot} from 'react-hot-loader/root';
 import {StaticMap} from 'react-map-gl';
@@ -13,12 +7,6 @@ import {useDispatch, useSelector} from 'react-redux';
 import TerrainLayer from '../terrain-layer/terrain-layer';
 import './App.css';
 import coast from '../data/Hong_Kong_18_Districts.geojson';
-// import sea from '../img/sea.png';
-
-// import { TileLayer } from '@deck.gl/geo-layers';
-// import { PathLayer } from '@deck.gl/layers';
-// import { fromArrayBuffer } from 'geotiff';
-// import axios from 'axios';
 import {lightingEffect} from './lighting';
 import {setBearing, resetViewport, setZoom, setMouseEvent} from './redux/action';
 
@@ -129,50 +117,52 @@ function App() {
   }, [resetViewportFlag]);
 
   // * tides layer
-  const Tides = new TerrainLayer({
-    visible: tidesVisibility,
-    elevationDecoder: {
-      rScaler: 1,
-      gScaler: 0,
-      bScaler: 0,
-      offset: 0
-    },
-    material: {
-      ambient: 0.5,
-      diffuse: 0.5,
-      shininess: 100
-    },
+  const Tides =
+    tidesVisibility &&
+    new TerrainLayer({
+      // visible: tidesVisibility,
+      elevationDecoder: {
+        rScaler: 1,
+        gScaler: 0,
+        bScaler: 0,
+        offset: 0
+      },
+      material: {
+        ambient: 0.5,
+        diffuse: 0.5,
+        shininess: 100
+      },
 
-    // Digital elevation model from https://www.usgs.gov/
-    // elevationData:
-    //   'https://raw.githubusercontent.com/visgl/deck.gl-data/master/website/terrain.png',
-    // texture: 'https://raw.githubusercontent.com/visgl/deck.gl-data/master/website/terrain-mask.png',
-    // bounds: [-122.5233, 37.6493, -122.3566, 37.8159],
+      // Digital elevation model from https://www.usgs.gov/
+      // elevationData:
+      //   'https://raw.githubusercontent.com/visgl/deck.gl-data/master/website/terrain.png',
+      // texture: 'https://raw.githubusercontent.com/visgl/deck.gl-data/master/website/terrain-mask.png',
+      // bounds: [-122.5233, 37.6493, -122.3566, 37.8159],
 
-    // hk terrain
-    // elevationData:
-    //   'https://raw.githubusercontent.com/laijackylai/loadersgl-tesselector/main/img/hk_terrain_resized_bigger.png',
-    // bounds: [113.825288215, 22.137987659, 114.444071614, 22.57161074],
+      // hk terrain
+      // elevationData:
+      //   'https://raw.githubusercontent.com/laijackylai/loadersgl-tesselector/main/img/hk_terrain_resized_bigger.png',
+      // bounds: [113.825288215, 22.137987659, 114.444071614, 22.57161074],
 
-    // test dsm
-    // elevationData:
-    //   'https://raw.githubusercontent.com/laijackylai/hkterrain/main/map/6NW24C(e819n830%2Ce820n830).png',
-    // bounds: [114.01401415218648, 22.409226206938843, 114.02130436516617, 22.41465152964679],
+      // test dsm
+      // elevationData:
+      //   'https://raw.githubusercontent.com/laijackylai/hkterrain/main/map/6NW24C(e819n830%2Ce820n830).png',
+      // bounds: [114.01401415218648, 22.409226206938843, 114.02130436516617, 22.41465152964679],
 
-    elevationData: `https://raw.githubusercontent.com/laijackylai/hkterrain/main/tides/${tide_names[tidesNum]}`,
-    texture: 'https://raw.githubusercontent.com/laijackylai/hkterrain/main/img/sea_texture.png', // ! test texture
-    // texture: 'https://raw.githubusercontent.com/laijackylai/hkterrain/main/map/mask.png',
-    // texture: 'https://raw.githubusercontent.com/laijackylai/hkterrain/main/img/wave.jpg',
-    bounds: [113, 21, 115, 23],
+      elevationData: `https://raw.githubusercontent.com/laijackylai/hkterrain/main/tides/${tide_names[tidesNum]}`,
+      texture: 'https://raw.githubusercontent.com/laijackylai/hkterrain/main/img/sea_texture.png', // ! test texture
+      // texture: 'https://raw.githubusercontent.com/laijackylai/hkterrain/main/map/mask.png',
+      // texture: 'https://raw.githubusercontent.com/laijackylai/hkterrain/main/img/wave.jpg',
+      bounds: [113, 21, 115, 23],
 
-    tesselator: tesselator,
-    meshMaxError: meshMaxError,
-    updateTriggers: {
-      meshMaxError,
-      tesselator,
-      tidesVisibility
-    }
-  });
+      tesselator: tesselator,
+      meshMaxError: meshMaxError,
+      updateTriggers: {
+        meshMaxError,
+        tesselator
+        // tidesVisibility
+      }
+    });
 
   const textureSelect = (props) => {
     const osmUrl = `https://a.tile.openstreetmap.org/${props.tile.z}/${props.tile.x}/${props.tile.y}.png`;
@@ -201,6 +191,7 @@ function App() {
     minZoom: 10,
     maxZoom: 15,
     tileSize: 256,
+    // extent: [113.8349922853287239, 22.1537640910980613, 114.4420072690531640, 22.5620254686685620],
 
     renderSubLayers: (props) => {
       const {
@@ -222,7 +213,8 @@ function App() {
           shininess: 100
         },
 
-        elevationData: `http://127.0.0.1:8080/tiles/png/${props.tile.z}/${props.tile.x}-${props.tile.y}-${props.tile.z}.png`,
+        // elevationData: `http://127.0.0.1:8080/tiles/png/${props.tile.z}/${props.tile.x}-${props.tile.y}-${props.tile.z}.png`,
+        elevationData: `https://127.0.0.1:3001/tiles/${props.tile.z}-${props.tile.x}-${props.tile.y}.png`,
         bounds: [west, south, east, north],
 
         // * text texture switch
@@ -232,28 +224,34 @@ function App() {
         meshMaxError: meshMaxError
       });
 
+      const outerTerrainLayer = terrainLayer ? true : false;
+      console.log(outerTerrainLayer);
+
       // ! test OSM buildings layer
       // * https://osmbuildings.org/documentation/data/
-      const buildingsLayer =
-        props.tile.z == 15 &&
-        new GeoJsonLayer(props, {
-          id: '3d-buildings',
-          data: `https://a.data.osmbuildings.org/0.2/anonymous/tile/15/${props.tile.x}/${props.tile.y}.json`, // ! wrong format
-          filled: false,
-          // extruded: true,
-          // wireframe: true,
-          getLineWidth: 1,
-          lineWidthScale: 5,
-          lineWidthMinPixels: 1,
-          getLineColor: [219, 26, 32],
-          parameters: {
-            depthTest: false
-          }
-        });
+      // const buildingsLayer =
+      //   props.tile.z == 15 &&
+      //   new GeoJsonLayer(props, {
+      //     id: '3d-buildings',
+      //     data: `https://a.data.osmbuildings.org/0.2/anonymous/tile/15/${props.tile.x}/${props.tile.y}.json`, // ! wrong format
+      //     filled: false,
+      //     // extruded: true,
+      //     // wireframe: true,
+      //     getLineWidth: 1,
+      //     lineWidthScale: 5,
+      //     lineWidthMinPixels: 1,
+      //     getLineColor: [219, 26, 32],
+      //     parameters: {
+      //       depthTest: false
+      //     }
+      //   });
       // console.log(buildingsLayer)
       // ! end test
 
-      return [terrainLayer, buildingsLayer];
+      return [
+        terrainLayer
+        // buildingsLayer
+      ];
     },
 
     updateTriggers: {
