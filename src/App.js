@@ -224,9 +224,6 @@ function App() {
         meshMaxError: meshMaxError
       });
 
-      const outerTerrainLayer = terrainLayer ? true : false;
-      console.log(outerTerrainLayer);
-
       // ! test OSM buildings layer
       // * https://osmbuildings.org/documentation/data/
       // const buildingsLayer =
