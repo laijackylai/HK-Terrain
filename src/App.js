@@ -188,7 +188,7 @@ function App() {
     // data: 'https://a.tile.openstreetmap.org/{z}/{x}/{y}.png', // ! for testing
     // data: 'http://0.0.0.0:8080/tiles/{x}-{y}-{z}.png',
 
-    minZoom: 10,
+    // minZoom: 10,
     maxZoom: 15,
     tileSize: 256,
     // extent: [113.8349922853287239, 22.1537640910980613, 114.4420072690531640, 22.5620254686685620],
@@ -198,7 +198,9 @@ function App() {
         bbox: {west, south, east, north}
       } = props.tile;
 
-      const terrainLayer = new TerrainLayer(props, {
+      const terrainLayerHK = new TerrainLayer(props, {
+        id: `hkterrain-${props.tile.z}-${props.tile.x}-${props.tile.y}`,
+
         // * terrarium decoder
         elevationDecoder: {
           rScaler: 256,
@@ -213,7 +215,33 @@ function App() {
           shininess: 100
         },
 
-        // elevationData: `http://127.0.0.1:8080/tiles/png/${props.tile.z}/${props.tile.x}-${props.tile.y}-${props.tile.z}.png`,
+        elevationData: `https://127.0.0.1:3001/tiles/${props.tile.z}-${props.tile.x}-${props.tile.y}.png`,
+        bounds: [west, south, east, north],
+
+        // * text texture switch
+        texture: textureSelect(props),
+
+        tesselator: tesselator,
+        meshMaxError: meshMaxError
+      });
+
+      const terrainLayerOutsideHK = new TerrainLayer(props, {
+        id: `terrainOutsideHK-${props.tile.z}-${props.tile.x}-${props.tile.y}`,
+
+        // * mapbox decoder
+        elevationDecoder: {
+          rScaler: 256 * 256 * 0.1,
+          gScaler: 256 * 0.1,
+          bScaler: 0.1,
+          offset: -10000
+        },
+
+        material: {
+          ambient: 0.5,
+          diffuse: 0.5,
+          shininess: 100
+        },
+
         elevationData: `https://127.0.0.1:3001/tiles/${props.tile.z}-${props.tile.x}-${props.tile.y}.png`,
         bounds: [west, south, east, north],
 
@@ -246,7 +274,8 @@ function App() {
       // ! end test
 
       return [
-        terrainLayer
+        terrainLayerOutsideHK,
+        terrainLayerHK
         // buildingsLayer
       ];
     },
