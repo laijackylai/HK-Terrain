@@ -9,6 +9,7 @@ import Info from './info';
 import Navigation from './navigation';
 import rootReducer from './redux/reducer';
 import TextureSelect from './textureSelect';
+import TimeSelect from './timeSelect';
 
 const THEME = createMuiTheme({
   typography: {
@@ -26,10 +27,24 @@ ReactDOM.render(
     <MuiThemeProvider theme={THEME}>
       <Provider store={store}>
         <App />
-        <Controls />
         <Navigation />
-        <TextureSelect />
         <Info />
+        <div
+          style={{
+            position: 'absolute',
+            display: 'flex',
+            alignItems: 'flex-end',
+            justifyContent: 'space-between',
+            left: '2vh',
+            right: '2vh',
+            bottom: '2vh',
+            widows: 'vw'
+          }}
+        >
+          <TextureSelect />
+          <TimeSelect />
+          <Controls />
+        </div>
       </Provider>
     </MuiThemeProvider>
   </React.StrictMode>,

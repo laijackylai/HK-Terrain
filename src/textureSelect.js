@@ -1,5 +1,5 @@
 import React from 'react';
-import osm from '../img/osm.png';
+// import osm from '../img/osm.png';
 import humanitarian from '../img/humanitarian.png';
 import landscape from '../img/landscape.png';
 import topo from '../img/opentopo.png';
@@ -8,20 +8,20 @@ import useWindowDimensions from './windowDimensions';
 import {setTexture} from './redux/action';
 import {useDispatch, useSelector} from 'react-redux';
 
-const OSM = () => {
-  const texture = useSelector((state) => state.texture);
-  const {height} = useWindowDimensions();
-  const dispatch = useDispatch();
+// const OSM = () => {
+//   const texture = useSelector((state) => state.texture);
+//   const {height} = useWindowDimensions();
+//   const dispatch = useDispatch();
 
-  return (
-    <div style={{border: texture == 'osm' ? '3px solid rgb(255, 115, 112)' : null, ...selectStyle}}>
-      <div style={touchStyle} onClick={() => dispatch(setTexture('osm'))}>
-        <img src={osm} width={0.075 * height} height={0.07 * height} />
-        <div style={wordStyle}> OSM </div>
-      </div>
-    </div>
-  );
-};
+//   return (
+//     <div style={{border: texture == 'osm' ? '3px solid rgb(255, 115, 112)' : null, ...selectStyle}}>
+//       <div style={touchStyle} onClick={() => dispatch(setTexture('osm'))}>
+//         <img src={osm} width={0.075 * height} height={0.07 * height} />
+//         <div style={wordStyle}> OSM </div>
+//       </div>
+//     </div>
+//   );
+// };
 
 const Humanitarian = () => {
   const texture = useSelector((state) => state.texture);
@@ -116,21 +116,28 @@ const TextureSelect = () => {
   return (
     <div
       style={{
-        position: 'absolute',
-        bottom: '2vh',
-        left: '2vh',
         display: 'flex',
         flexDirection: 'row',
         gap: '1vh',
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'flex-end'
       }}
     >
-      <OSM />
-      <Topo />
-      <Humanitarian />
-      <Landscape />
-      <Source />
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          gap: '1vh',
+          justifyContent: 'center',
+          alignItems: 'center'
+        }}
+      >
+        {/* <OSM /> */}
+        <Topo />
+        <Humanitarian />
+        <Landscape />
+        <Source />
+      </div>
     </div>
   );
 };

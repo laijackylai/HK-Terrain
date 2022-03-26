@@ -9,8 +9,7 @@ import {
 } from '@material-ui/core';
 import React from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {setMeshMaxError, setTesselator, setTideIndex, setTidesVisibility} from './redux/action';
-import useInterval from 'react-useinterval';
+import {setMeshMaxError, setTesselator, setTidesVisibility} from './redux/action';
 import useWindowDimensions from './windowDimensions';
 
 const Tesselator = () => {
@@ -123,21 +122,6 @@ const TidesVisibility = () => {
 };
 
 const Controls = () => {
-  const dispatch = useDispatch();
-  // const tidesVisibility = useSelector(state => state.tidesVisibility)
-  const tideIndex = useSelector((state) => state.tideIndex);
-
-  const increment = () => {
-    const oldIndex = tideIndex;
-    if (tideIndex < 7) {
-      dispatch(setTideIndex(oldIndex + 1));
-    } else {
-      dispatch(setTideIndex(0));
-    }
-  };
-
-  useInterval(increment, 1000);
-
   return (
     <div style={controlStyles}>
       <TidesVisibility />
@@ -148,9 +132,6 @@ const Controls = () => {
 };
 
 const controlStyles = {
-  position: 'absolute',
-  bottom: '3vh',
-  right: '3vh',
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'flex-end',
