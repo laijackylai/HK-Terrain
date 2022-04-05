@@ -9,6 +9,9 @@ import './App.css';
 import coast from '../data/Hong_Kong_18_Districts.geojson';
 import {lightingEffect} from './lighting';
 import {setBearing, resetViewport, setZoom, setMouseEvent} from './redux/action';
+// import { load } from '@loaders.gl/core';
+import {PLYLoader} from '@loaders.gl/ply';
+import {PointCloudLayer} from '@deck.gl/layers';
 
 const MAPBOX_ACCESS_TOKEN =
   'pk.eyJ1IjoibGFpamFja3lsYWkiLCJhIjoiY2tjZWZucjAzMDd1eDJzcGJvN2tiZHduOSJ9.vWThniHwg9V1wEO3O6xn_g';
@@ -180,8 +183,28 @@ function App() {
     if (texture == 'landscape') return landscapeUrl;
     if (texture == 'topo') return topoUrl;
     if (texture == 'source')
-      return `http://127.0.0.1:8080/tiles/png/${props.tile.z}/${props.tile.x}-${props.tile.y}-${props.tile.z}.png`;
+      return `http://127.0.0.1:3001/tiles/png/${props.tile.z}/${props.tile.x}-${props.tile.y}-${props.tile.z}.png`;
   };
+
+  // useEffect(() => {
+  //   loadData()
+  // }, [])
+
+  // const loadData = async () => {
+  //   const url = `https://localhost:3001/test/data.ply`
+  //   const res = await load(url, PLYLoader)
+  //   console.log(res)
+  // }
+
+  const pc = new PointCloudLayer({
+    id: 'pc',
+    data: `https://localhost:3001/test/data.ply`,
+    sizeUnits: 'common',
+    pointSize: 0.001,
+    // sizeUnits: 'pixels',
+    // pointSize: 2,
+    loaders: [PLYLoader]
+  });
 
   const tiles = new TileLayer({
     // https://wiki.openstreetmap.org/wiki/Slippy_map_tilenames#Tile_servers
@@ -325,7 +348,7 @@ function App() {
     <DeckGL
       controller
       initialViewState={initialViewState}
-      layers={[tiles, Tides, coastLine]}
+      layers={[tiles, Tides, coastLine, pc]}
       effects={[lightingEffect]}
       onViewStateChange={onViewStateChange}
       _pickable={false}

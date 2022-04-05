@@ -86,7 +86,7 @@ const mouseEventReducer = (state = null, action) => {
   }
 };
 
-const tidesVisibilityReducer = (state = true, action) => {
+const tidesVisibilityReducer = (state = false, action) => {
   switch (action.type) {
     case 'SET_TIDES_VISIBILITY':
       state = action.payload;
