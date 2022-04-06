@@ -96,6 +96,26 @@ const tidesVisibilityReducer = (state = false, action) => {
   }
 };
 
+const radarVisibilityReducer = (state = true, action) => {
+  switch (action.type) {
+    case 'SET_RADAR_VISIBILITY':
+      state = action.payload;
+      return state;
+    default:
+      return state;
+  }
+};
+
+const radarDataReducer = (state = '', action) => {
+  switch (action.type) {
+    case 'SET_RADAR_DATA':
+      state = action.payload;
+      return state;
+    default:
+      return state;
+  }
+};
+
 const rootReducer = combineReducers({
   meshMaxError: meshMaxErrorReducer,
   tesselator: tesselatorReducer,
@@ -105,7 +125,9 @@ const rootReducer = combineReducers({
   zoom: zoomReducer,
   texture: textureReducer,
   mouseEvent: mouseEventReducer,
-  tidesVisibility: tidesVisibilityReducer
+  tidesVisibility: tidesVisibilityReducer,
+  radarVisibility: radarVisibilityReducer,
+  radarData: radarDataReducer
 });
 
 export default rootReducer;

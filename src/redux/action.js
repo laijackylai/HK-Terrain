@@ -50,3 +50,13 @@ export const setTidesVisibility = (b) => ({
   type: 'SET_TIDES_VISIBILITY',
   payload: b
 });
+
+export const setRadarVisibility = (b) => ({
+  type: 'SET_RADAR_VISIBILITY',
+  payload: b
+});
+
+export const setRadarData = (str) => ({
+  type: 'SET_RADAR_DATA',
+  payload: str
+});

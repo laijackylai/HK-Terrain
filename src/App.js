@@ -81,6 +81,8 @@ function App() {
   const zoom = useSelector((state) => state.zoom);
   const texture = useSelector((state) => state.texture);
   const tidesVisibility = useSelector((state) => state.tidesVisibility);
+  const radarVisibility = useSelector((state) => state.radarVisibility);
+  const radarData = useSelector((state) => state.radarData);
 
   const [initialViewState, setInitialViewState] = useState(ZOOMED_OUT);
   const [viewState, setViewState] = useState(initialViewState);
@@ -196,15 +198,21 @@ function App() {
   //   console.log(res)
   // }
 
-  const pc = new PointCloudLayer({
-    id: 'pc',
-    data: `https://localhost:3001/test/data.ply`,
-    sizeUnits: 'common',
-    pointSize: 0.001,
-    // sizeUnits: 'pixels',
-    // pointSize: 2,
-    loaders: [PLYLoader]
-  });
+  const pc =
+    radarVisibility &&
+    radarData &&
+    new PointCloudLayer({
+      id: 'pc',
+      data: radarData,
+      sizeUnits: 'common',
+      pointSize: 0.001,
+      // sizeUnits: 'pixels',
+      // pointSize: 2,
+      loaders: [PLYLoader],
+      updateTriggers: {
+        radarData
+      }
+    });
 
   const tiles = new TileLayer({
     // https://wiki.openstreetmap.org/wiki/Slippy_map_tilenames#Tile_servers

@@ -1,20 +1,34 @@
 import {Box, Slider} from '@material-ui/core';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import useWindowDimensions from './windowDimensions';
 import Select from 'react-select';
 import DatePicker from 'sassy-datepicker';
+import axios from 'axios';
+import {useDispatch} from 'react-redux';
+import {setRadarData} from './redux/action';
 
 const TimeSelect = () => {
+  const dispatch = useDispatch();
   const {width} = useWindowDimensions();
 
-  const [pickedDate, setPickedDate] = useState(new Date(new Date().setHours(0, 0, 0, 0)));
+  const [pickedDate, setPickedDate] = useState(
+    new Date(new Date('2021-09-16').setHours(0, 0, 0, 0))
+  );
   const [calendarOpen, setCalendarOpen] = useState(false);
+  const [pickOptions, setPickOptions] = useState([]);
 
-  const options = [
-    {value: 'chocolate', label: 'Chocolate'},
-    {value: 'strawberry', label: 'Strawberry'},
-    {value: 'vanilla', label: 'Vanilla'}
-  ];
+  useEffect(() => {
+    getRadarDataset();
+  }, [pickedDate]);
+
+  const getRadarDataset = async () => {
+    const res = await axios.get(
+      `https://localhost:3001/availableTimeslots/${formatDate(pickedDate)
+        .replace('-', '')
+        .replace('-', '')}/radar`
+    );
+    setPickOptions(res.data);
+  };
 
   const formatDate = (d) => {
     let month = '' + (d.getMonth() + 1);
@@ -25,6 +39,12 @@ const TimeSelect = () => {
     if (day.length < 2) day = '0' + day;
 
     return [year, month, day].join('-');
+  };
+
+  const onSelectTime = async (o) => {
+    const date = formatDate(pickedDate).replace('-', '').replace('-', '');
+    const url = `https://localhost:3001/radarData/${date}/${o.value}`;
+    dispatch(setRadarData(url));
   };
 
   return (
@@ -80,9 +100,9 @@ const TimeSelect = () => {
         </button>
         <Select
           menuPlacement="top"
-          defaultValue={options[0]}
-          options={options}
-          onChange={(o) => console.log(o)}
+          defaultValue={'None Selected'}
+          options={pickOptions}
+          onChange={(o) => onSelectTime(o)}
         />
         <Box sx={{width: 0.4 * width}}>
           <Slider

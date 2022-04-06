@@ -34,15 +34,24 @@ ReactDOM.render(
             position: 'absolute',
             display: 'flex',
             alignItems: 'flex-end',
-            justifyContent: 'space-between',
+            justifyContent: 'flex-start',
             left: '2vh',
             right: '2vh',
             bottom: '2vh',
-            widows: 'vw'
+            widows: 'vw',
+            gap: 20
           }}
         >
           <TextureSelect />
           <TimeSelect />
+        </div>
+        <div
+          style={{
+            position: 'absolute',
+            right: '2vh',
+            bottom: '2vh'
+          }}
+        >
           <Controls />
         </div>
       </Provider>

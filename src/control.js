@@ -9,7 +9,12 @@ import {
 } from '@material-ui/core';
 import React from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {setMeshMaxError, setTesselator, setTidesVisibility} from './redux/action';
+import {
+  setMeshMaxError,
+  setRadarVisibility,
+  setTesselator,
+  setTidesVisibility
+} from './redux/action';
 import useWindowDimensions from './windowDimensions';
 
 const Tesselator = () => {
@@ -121,9 +126,40 @@ const TidesVisibility = () => {
   );
 };
 
+const RadarVisibility = () => {
+  const dispatch = useDispatch();
+  const {width} = useWindowDimensions();
+  const radarVisibility = useSelector((state) => state.radarVisibility);
+
+  return (
+    <div
+      style={{
+        backgroundColor: 'white',
+        borderRadius: 10,
+        display: 'flex',
+        justifyContent: 'flex-start',
+        alignItems: 'center'
+      }}
+    >
+      <FormControlLabel
+        style={{paddingLeft: 0.01 * width}}
+        control={
+          <Checkbox
+            onChange={(e, i) => dispatch(setRadarVisibility(i))}
+            color="primary"
+            checked={radarVisibility}
+          />
+        }
+        label="Radar"
+      />
+    </div>
+  );
+};
+
 const Controls = () => {
   return (
     <div style={controlStyles}>
+      <RadarVisibility />
       <TidesVisibility />
       <Tesselator />
       <MeshMaxErrorSlider />
