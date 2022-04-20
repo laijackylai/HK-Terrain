@@ -8,10 +8,17 @@ import TerrainLayer from '../terrain-layer/terrain-layer';
 import './App.css';
 import coast from '../data/Hong_Kong_18_Districts.geojson';
 import {lightingEffect} from './lighting';
-import {setBearing, resetViewport, setZoom, setMouseEvent} from './redux/action';
-// import { load } from '@loaders.gl/core';
+import {
+  setBearing,
+  resetViewport,
+  setZoom,
+  setMouseEvent
+  // setTideIndex
+} from './redux/action';
 import {PLYLoader} from '@loaders.gl/ply';
 import {PointCloudLayer} from '@deck.gl/layers';
+// import useInterval from 'react-useinterval';
+// import { load } from '@loaders.gl/core';
 
 const MAPBOX_ACCESS_TOKEN =
   'pk.eyJ1IjoibGFpamFja3lsYWkiLCJhIjoiY2tjZWZucjAzMDd1eDJzcGJvN2tiZHduOSJ9.vWThniHwg9V1wEO3O6xn_g';
@@ -80,9 +87,11 @@ function App() {
   const resetViewportFlag = useSelector((state) => state.resetViewportFlag);
   const zoom = useSelector((state) => state.zoom);
   const texture = useSelector((state) => state.texture);
+  const terrainVisibility = useSelector((state) => state.terrainVisibility);
   const tidesVisibility = useSelector((state) => state.tidesVisibility);
   const radarVisibility = useSelector((state) => state.radarVisibility);
   const radarData = useSelector((state) => state.radarData);
+  const tidalHeightMultiplier = useSelector((state) => state.tidalHeightMultiplier);
 
   const [initialViewState, setInitialViewState] = useState(ZOOMED_OUT);
   const [viewState, setViewState] = useState(initialViewState);
@@ -96,6 +105,13 @@ function App() {
   //   })
   // }, 3000);
   // ! end playing
+
+  // * tidal animation
+  // const ti = useSelector(state => state.tideIndex)
+  // useInterval(() => {
+  //   if (ti == 8) dispatch(setTideIndex(0))
+  //   else dispatch(setTideIndex(ti + 1))
+  // }, 1000)
 
   useEffect(() => {
     if (zoom != viewState.zoom) {
@@ -127,7 +143,7 @@ function App() {
     new TerrainLayer({
       // visible: tidesVisibility,
       elevationDecoder: {
-        rScaler: 1,
+        rScaler: tidalHeightMultiplier,
         gScaler: 0,
         bScaler: 0,
         offset: 0
@@ -164,7 +180,8 @@ function App() {
       meshMaxError: meshMaxError,
       updateTriggers: {
         meshMaxError,
-        tesselator
+        tesselator,
+        tidalHeightMultiplier
         // tidesVisibility
       }
     });
@@ -214,109 +231,111 @@ function App() {
       }
     });
 
-  const tiles = new TileLayer({
-    // https://wiki.openstreetmap.org/wiki/Slippy_map_tilenames#Tile_servers
-    // data: 'https://a.tile.openstreetmap.org/{z}/{x}/{y}.png', // ! for testing
-    // data: 'http://0.0.0.0:8080/tiles/{x}-{y}-{z}.png',
+  const tiles =
+    terrainVisibility &&
+    new TileLayer({
+      // https://wiki.openstreetmap.org/wiki/Slippy_map_tilenames#Tile_servers
+      // data: 'https://a.tile.openstreetmap.org/{z}/{x}/{y}.png', // ! for testing
+      // data: 'http://0.0.0.0:8080/tiles/{x}-{y}-{z}.png',
 
-    // minZoom: 10,
-    maxZoom: 15,
-    tileSize: 256,
-    // extent: [113.8349922853287239, 22.1537640910980613, 114.4420072690531640, 22.5620254686685620],
+      // minZoom: 10,
+      maxZoom: 15,
+      tileSize: 256,
+      // extent: [113.8349922853287239, 22.1537640910980613, 114.4420072690531640, 22.5620254686685620],
 
-    renderSubLayers: (props) => {
-      const {
-        bbox: {west, south, east, north}
-      } = props.tile;
+      renderSubLayers: (props) => {
+        const {
+          bbox: {west, south, east, north}
+        } = props.tile;
 
-      const terrainLayerHK = new TerrainLayer(props, {
-        id: `hkterrain-${props.tile.z}-${props.tile.x}-${props.tile.y}`,
+        const terrainLayerHK = new TerrainLayer(props, {
+          id: `hkterrain-${props.tile.z}-${props.tile.x}-${props.tile.y}`,
 
-        // * terrarium decoder
-        elevationDecoder: {
-          rScaler: 256,
-          gScaler: 1,
-          bScaler: 1 / 256,
-          offset: -32768
-        },
+          // * terrarium decoder
+          elevationDecoder: {
+            rScaler: 256,
+            gScaler: 1,
+            bScaler: 1 / 256,
+            offset: -32768
+          },
 
-        material: {
-          ambient: 0.5,
-          diffuse: 0.5,
-          shininess: 100
-        },
+          material: {
+            ambient: 0.5,
+            diffuse: 0.5,
+            shininess: 100
+          },
 
-        elevationData: `https://127.0.0.1:3001/tiles/${props.tile.z}-${props.tile.x}-${props.tile.y}.png`,
-        bounds: [west, south, east, north],
+          elevationData: `https://127.0.0.1:3001/tiles/${props.tile.z}-${props.tile.x}-${props.tile.y}.png`,
+          bounds: [west, south, east, north],
 
-        // * text texture switch
-        texture: textureSelect(props),
+          // * text texture switch
+          texture: textureSelect(props),
 
-        tesselator: tesselator,
-        meshMaxError: meshMaxError
-      });
+          tesselator: tesselator,
+          meshMaxError: meshMaxError
+        });
 
-      const terrainLayerOutsideHK = new TerrainLayer(props, {
-        id: `terrainOutsideHK-${props.tile.z}-${props.tile.x}-${props.tile.y}`,
+        const terrainLayerOutsideHK = new TerrainLayer(props, {
+          id: `terrainOutsideHK-${props.tile.z}-${props.tile.x}-${props.tile.y}`,
 
-        // * mapbox decoder
-        elevationDecoder: {
-          rScaler: 256 * 256 * 0.1,
-          gScaler: 256 * 0.1,
-          bScaler: 0.1,
-          offset: -10000
-        },
+          // * mapbox decoder
+          elevationDecoder: {
+            rScaler: 256 * 256 * 0.1,
+            gScaler: 256 * 0.1,
+            bScaler: 0.1,
+            offset: -10000
+          },
 
-        material: {
-          ambient: 0.5,
-          diffuse: 0.5,
-          shininess: 100
-        },
+          material: {
+            ambient: 0.5,
+            diffuse: 0.5,
+            shininess: 100
+          },
 
-        elevationData: `https://127.0.0.1:3001/tiles/${props.tile.z}-${props.tile.x}-${props.tile.y}.png`,
-        bounds: [west, south, east, north],
+          elevationData: `https://127.0.0.1:3001/tiles/${props.tile.z}-${props.tile.x}-${props.tile.y}.png`,
+          bounds: [west, south, east, north],
 
-        // * text texture switch
-        texture: textureSelect(props),
+          // * text texture switch
+          texture: textureSelect(props),
 
-        tesselator: tesselator,
-        meshMaxError: meshMaxError
-      });
+          tesselator: tesselator,
+          meshMaxError: meshMaxError
+        });
 
-      // ! test OSM buildings layer
-      // * https://osmbuildings.org/documentation/data/
-      // const buildingsLayer =
-      //   props.tile.z == 15 &&
-      //   new GeoJsonLayer(props, {
-      //     id: '3d-buildings',
-      //     data: `https://a.data.osmbuildings.org/0.2/anonymous/tile/15/${props.tile.x}/${props.tile.y}.json`, // ! wrong format
-      //     filled: false,
-      //     // extruded: true,
-      //     // wireframe: true,
-      //     getLineWidth: 1,
-      //     lineWidthScale: 5,
-      //     lineWidthMinPixels: 1,
-      //     getLineColor: [219, 26, 32],
-      //     parameters: {
-      //       depthTest: false
-      //     }
-      //   });
-      // console.log(buildingsLayer)
-      // ! end test
+        // ! test OSM buildings layer
+        // * https://osmbuildings.org/documentation/data/
+        // const buildingsLayer =
+        //   props.tile.z == 15 &&
+        //   new GeoJsonLayer(props, {
+        //     id: '3d-buildings',
+        //     data: `https://a.data.osmbuildings.org/0.2/anonymous/tile/15/${props.tile.x}/${props.tile.y}.json`, // ! wrong format
+        //     filled: false,
+        //     // extruded: true,
+        //     // wireframe: true,
+        //     getLineWidth: 1,
+        //     lineWidthScale: 5,
+        //     lineWidthMinPixels: 1,
+        //     getLineColor: [219, 26, 32],
+        //     parameters: {
+        //       depthTest: false
+        //     }
+        //   });
+        // console.log(buildingsLayer)
+        // ! end test
 
-      return [
-        terrainLayerOutsideHK,
-        terrainLayerHK
-        // buildingsLayer
-      ];
-    },
+        return [
+          terrainLayerOutsideHK,
+          terrainLayerHK
+          // buildingsLayer
+        ];
+      },
 
-    updateTriggers: {
-      meshMaxError,
-      tesselator,
-      texture
-    }
-  });
+      updateTriggers: {
+        meshMaxError,
+        tesselator,
+        texture
+      }
+    });
 
   // TODO: can try to use kyle barron's library to snap vector features to the terrain (https://github.com/kylebarron/snap-to-tin)
   // * now the coastline are snapped to the seafloor, i.e. 0m

@@ -46,6 +46,11 @@ export const setMouseEvent = (e) => ({
   payload: e
 });
 
+export const setTerrainVisibility = (b) => ({
+  type: 'SET_TERRAIN_VISIBILITY',
+  payload: b
+});
+
 export const setTidesVisibility = (b) => ({
   type: 'SET_TIDES_VISIBILITY',
   payload: b
@@ -59,4 +64,9 @@ export const setRadarVisibility = (b) => ({
 export const setRadarData = (str) => ({
   type: 'SET_RADAR_DATA',
   payload: str
+});
+
+export const setTidalHeightMultiplier = (m) => ({
+  type: 'SET_TIDAL_HEIGHT_MULTIPLIER',
+  payload: m
 });

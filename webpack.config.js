@@ -3,6 +3,7 @@ const webpack = require('webpack');
 const Dotenv = require('dotenv-webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
+const CompressionPlugin = require('compression-webpack-plugin');
 
 const PORT = process.env.PORT || 3000;
 
@@ -81,6 +82,7 @@ module.exports = {
     new HtmlWebpackPlugin({template: path.join(__dirname, 'src', 'index.html')}),
     new webpack.HotModuleReplacementPlugin(),
     new Dotenv(),
-    new webpack.ids.DeterministicChunkIdsPlugin({maxLength: 5})
+    new webpack.ids.DeterministicChunkIdsPlugin({maxLength: 5}),
+    new CompressionPlugin()
   ]
 };

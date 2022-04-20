@@ -86,6 +86,16 @@ const mouseEventReducer = (state = null, action) => {
   }
 };
 
+const terrainVisibilityReducer = (state = true, action) => {
+  switch (action.type) {
+    case 'SET_TERRAIN_VISIBILITY':
+      state = action.payload;
+      return state;
+    default:
+      return state;
+  }
+};
+
 const tidesVisibilityReducer = (state = false, action) => {
   switch (action.type) {
     case 'SET_TIDES_VISIBILITY':
@@ -116,6 +126,16 @@ const radarDataReducer = (state = '', action) => {
   }
 };
 
+const tidalHeightMultiplierReducer = (state = 1, action) => {
+  switch (action.type) {
+    case 'SET_TIDAL_HEIGHT_MULTIPLIER':
+      state = action.payload;
+      return state;
+    default:
+      return state;
+  }
+};
+
 const rootReducer = combineReducers({
   meshMaxError: meshMaxErrorReducer,
   tesselator: tesselatorReducer,
@@ -125,9 +145,11 @@ const rootReducer = combineReducers({
   zoom: zoomReducer,
   texture: textureReducer,
   mouseEvent: mouseEventReducer,
+  terrainVisibility: terrainVisibilityReducer,
   tidesVisibility: tidesVisibilityReducer,
   radarVisibility: radarVisibilityReducer,
-  radarData: radarDataReducer
+  radarData: radarDataReducer,
+  tidalHeightMultiplier: tidalHeightMultiplierReducer
 });
 
 export default rootReducer;

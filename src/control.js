@@ -12,7 +12,9 @@ import {useDispatch, useSelector} from 'react-redux';
 import {
   setMeshMaxError,
   setRadarVisibility,
+  setTerrainVisibility,
   setTesselator,
+  setTidalHeightMultiplier,
   setTidesVisibility
 } from './redux/action';
 import useWindowDimensions from './windowDimensions';
@@ -96,6 +98,69 @@ const MeshMaxErrorSlider = () => {
   );
 };
 
+const TidalHeightSlider = () => {
+  const dispatch = useDispatch();
+  const tidalHeightMultiplier = useSelector((state) => state.tidalHeightMultiplier);
+
+  return (
+    <div
+      style={{
+        fontFamily: 'Ubuntu',
+        backgroundColor: 'white',
+        borderRadius: 10,
+        paddingLeft: '12px',
+        paddingRight: '12px',
+        paddingTop: '7px',
+        paddingBottom: '7px',
+        color: '#292929'
+      }}
+    >
+      <div>Tidal Height Multiplier</div>
+      <Slider
+        value={tidalHeightMultiplier}
+        min={1}
+        max={100}
+        step={null}
+        marks={[{value: 1}, {value: 20}, {value: 40}, {value: 60}, {value: 80}, {value: 100}]}
+        onChangeCommitted={(event, value) => {
+          dispatch(setTidalHeightMultiplier(value));
+        }}
+      />
+      <div>{tidalHeightMultiplier}x</div>
+    </div>
+  );
+};
+
+const TerrainVisibility = () => {
+  const dispatch = useDispatch();
+  const {width} = useWindowDimensions();
+  const terrainVisibility = useSelector((state) => state.terrainVisibility);
+
+  return (
+    <div
+      style={{
+        backgroundColor: 'white',
+        borderRadius: 10,
+        display: 'flex',
+        justifyContent: 'flex-start',
+        alignItems: 'center'
+      }}
+    >
+      <FormControlLabel
+        style={{paddingLeft: 0.01 * width}}
+        control={
+          <Checkbox
+            onChange={(e, i) => dispatch(setTerrainVisibility(i))}
+            color="primary"
+            checked={terrainVisibility}
+          />
+        }
+        label="Terrain"
+      />
+    </div>
+  );
+};
+
 const TidesVisibility = () => {
   const dispatch = useDispatch();
   const {width} = useWindowDimensions();
@@ -159,8 +224,10 @@ const RadarVisibility = () => {
 const Controls = () => {
   return (
     <div style={controlStyles}>
+      <TerrainVisibility />
       <RadarVisibility />
       <TidesVisibility />
+      <TidalHeightSlider />
       <Tesselator />
       <MeshMaxErrorSlider />
     </div>
