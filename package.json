@@ -32,6 +32,7 @@
     "deck.gl": "^8.4.15",
     "express": "^4.17.3",
     "express-static-gzip": "^2.1.5",
+    "geobuf": "^3.0.2",
     "geotiff": "^1.0.8",
     "global": "^4.4.0",
     "is-array-buffer": "^2.0.0",
@@ -39,6 +40,7 @@
     "math.gl": "^3.4.2",
     "moment": "^2.29.1",
     "papaparse": "^5.3.1",
+    "pbf": "^3.2.1",
     "react": "^16.13.1",
     "react-bootstrap": "^2.2.2",
     "react-dom": "^16.13.1",
@@ -86,6 +88,7 @@
     "ts-loader": "^9.2.8",
     "typescript": "^4.6.2",
     "webpack": "^5.35.0",
+    "webpack-bundle-analyzer": "^4.5.0",
     "webpack-cli": "^4.6.0",
     "webpack-dev-server": "^3.11.2"
   }

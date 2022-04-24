@@ -6,19 +6,14 @@ import {StaticMap} from 'react-map-gl';
 import {useDispatch, useSelector} from 'react-redux';
 import TerrainLayer from '../terrain-layer/terrain-layer';
 import './App.css';
-import coast from '../data/Hong_Kong_18_Districts.geojson';
 import {lightingEffect} from './lighting';
-import {
-  setBearing,
-  resetViewport,
-  setZoom,
-  setMouseEvent
-  // setTideIndex
-} from './redux/action';
+import {setBearing, resetViewport, setZoom, setMouseEvent, setTideIndex} from './redux/action';
 import {PLYLoader} from '@loaders.gl/ply';
 import {PointCloudLayer} from '@deck.gl/layers';
-// import useInterval from 'react-useinterval';
-// import { load } from '@loaders.gl/core';
+import useInterval from 'react-useinterval';
+import axios from 'axios';
+import geobuf from 'geobuf';
+import Pbf from 'pbf';
 
 const MAPBOX_ACCESS_TOKEN =
   'pk.eyJ1IjoibGFpamFja3lsYWkiLCJhIjoiY2tjZWZucjAzMDd1eDJzcGJvN2tiZHduOSJ9.vWThniHwg9V1wEO3O6xn_g';
@@ -107,11 +102,11 @@ function App() {
   // ! end playing
 
   // * tidal animation
-  // const ti = useSelector(state => state.tideIndex)
-  // useInterval(() => {
-  //   if (ti == 8) dispatch(setTideIndex(0))
-  //   else dispatch(setTideIndex(ti + 1))
-  // }, 1000)
+  const ti = useSelector((state) => state.tideIndex);
+  useInterval(() => {
+    if (ti == 8) dispatch(setTideIndex(0));
+    else dispatch(setTideIndex(ti + 1));
+  }, 1000);
 
   useEffect(() => {
     if (zoom != viewState.zoom) {
@@ -337,28 +332,43 @@ function App() {
       }
     });
 
+  useEffect(() => {
+    loadCoastlineData();
+  }, []);
+
+  const [coastlineData, setCoastlineData] = useState();
+  const loadCoastlineData = async () => {
+    const d = await axios.get('https://127.0.0.1:3001/coastline.pbf', {
+      responseType: 'arraybuffer'
+    });
+    const data = geobuf.decode(new Pbf(d.data));
+    setCoastlineData(data);
+  };
+
   // TODO: can try to use kyle barron's library to snap vector features to the terrain (https://github.com/kylebarron/snap-to-tin)
   // * now the coastline are snapped to the seafloor, i.e. 0m
-  const coastLine = new GeoJsonLayer({
-    id: 'coast-line',
-    data: coast,
-    // pickable: false,
-    // stroked: false,
-    filled: false,
-    // extruded: true,
-    // wireframe: true,
-    getLineWidth: 1,
-    lineWidthScale: 5,
-    lineWidthMinPixels: 1,
-    getLineColor: [219, 26, 32],
-    // lineCapRounded: true,
-    // getElevation: 30,
-    // getPolygonOffset: () => [0, -10000], // * temp solution
-    parameters: {
-      // * turn off depth test to get rid of z-fighting for this layer
-      depthTest: false
-    }
-  });
+  const coastLine =
+    coastlineData &&
+    new GeoJsonLayer({
+      id: 'coast-line',
+      data: coastlineData,
+      // pickable: false,
+      // stroked: false,
+      filled: false,
+      // extruded: true,
+      // wireframe: true,
+      getLineWidth: 1,
+      lineWidthScale: 5,
+      lineWidthMinPixels: 1,
+      getLineColor: [219, 26, 32],
+      // lineCapRounded: true,
+      // getElevation: 30,
+      // getPolygonOffset: () => [0, -10000], // * temp solution
+      parameters: {
+        // * turn off depth test to get rid of z-fighting for this layer
+        depthTest: false
+      }
+    });
 
   const onViewStateChange = useCallback(({viewState}) => {
     setViewState(viewState);
