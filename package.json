@@ -4,9 +4,10 @@
   "description": "absolute most detailed HK terrain ever!",
   "main": "index.js",
   "scripts": {
-    "webpack": "webpack",
     "dev": "webpack serve",
-    "start": "webpack & node index.js",
+    "start": "webpack serve --open --config webpack.dev.js",
+    "build": "webpack --config webpack.prod.js",
+    "prod": "node index.js",
     "format": "prettier-eslint --eslint-config-path ./.eslintrc.js --write '**/*.js'",
     "lint": "eslint . --ext js",
     "prepare": "husky install",
@@ -90,6 +91,7 @@
     "webpack": "^5.35.0",
     "webpack-bundle-analyzer": "^4.5.0",
     "webpack-cli": "^4.6.0",
-    "webpack-dev-server": "^3.11.2"
+    "webpack-dev-server": "^3.11.2",
+    "webpack-merge": "^5.8.0"
   }
 }
