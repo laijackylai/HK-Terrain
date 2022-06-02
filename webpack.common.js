@@ -6,12 +6,12 @@ const TerserPlugin = require('terser-webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
-const PORT = process.env.PORT || 3000;
+// const PORT = process.env.PORT || 3000;
 
 module.exports = {
   entry: ['react-hot-loader/patch', path.join(__dirname, 'src', 'index.js')],
   output: {path: path.join(__dirname, 'build'), filename: 'index.bundle.js', publicPath: ''},
-  mode: 'development',
+  // mode: 'development',
   resolve: {
     modules: [path.resolve(__dirname, 'src'), 'node_modules'],
     alias: {
@@ -19,17 +19,17 @@ module.exports = {
     },
     extensions: ['.tsx', '.ts', '.js']
   },
-  devtool: 'eval',
-  devServer: {
-    contentBase: path.join(__dirname, 'src'),
-    // host: '0.0.0.0',
-    port: PORT || 3000,
-    disableHostCheck: true,
-    watchOptions: {
-      poll: true
-    },
-    hot: true
-  },
+  // devtool: 'eval',
+  // devServer: {
+  //   contentBase: path.join(__dirname, 'src'),
+  //   // host: '0.0.0.0',
+  //   port: PORT || 3000,
+  //   disableHostCheck: true,
+  //   watchOptions: {
+  //     poll: true
+  //   },
+  //   hot: true
+  // },
   module: {
     rules: [
       {

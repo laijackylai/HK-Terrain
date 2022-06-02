@@ -7,10 +7,16 @@ import {useDispatch, useSelector} from 'react-redux';
 import TerrainLayer from '../terrain-layer/terrain-layer';
 import './App.css';
 import {lightingEffect} from './lighting';
-import {setBearing, resetViewport, setZoom, setMouseEvent, setTideIndex} from './redux/action';
+import {
+  setBearing,
+  resetViewport,
+  setZoom,
+  setMouseEvent
+  // setTideIndex
+} from './redux/action';
 import {PLYLoader} from '@loaders.gl/ply';
 import {PointCloudLayer} from '@deck.gl/layers';
-import useInterval from 'react-useinterval';
+// import useInterval from 'react-useinterval';
 import axios from 'axios';
 import geobuf from 'geobuf';
 import Pbf from 'pbf';
@@ -105,11 +111,11 @@ function App() {
   // ! end playing
 
   // * tidal animation
-  const ti = useSelector((state) => state.tideIndex);
-  useInterval(() => {
-    if (ti == 8) dispatch(setTideIndex(0));
-    else dispatch(setTideIndex(ti + 1));
-  }, 1000);
+  // const ti = useSelector((state) => state.tideIndex);
+  // useInterval(() => {
+  //   if (ti == 8) dispatch(setTideIndex(0));
+  //   else dispatch(setTideIndex(ti + 1));
+  // }, 1000);
 
   useEffect(() => {
     if (zoom != viewState.zoom) {
