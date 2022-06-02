@@ -4,11 +4,17 @@ Tiling HK Terrain
 
 ### To start the project
 
-Install the required packages using npm or yarn
-`npm install`
-
-`npm install --global yarn && yarn`
+Install the required packages using npm
+```
+npm install
+```
+or yarn
+```
+npm install --global yarn && yarn
+```
 
 Start the project via
-`yarn start`
-Go to http://0.0.0.0:3000/ or http://localhost:3000
+```
+yarn start
+```
+Go to the address outputed by yarn
