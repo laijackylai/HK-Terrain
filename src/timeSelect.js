@@ -48,7 +48,7 @@ const TimeSelect = () => {
     if (pickedDate != null && timeIndex != null) {
       const date = formatDate(pickedDate).replace('-', '').replace('-', '');
       const obj = res.data[timeIndex];
-      const url = `https://localhost:3001/radarData/${date}/${obj.value}`;
+      const url = `https://${routerIP}/radarData/${date}/${obj.value}`;
       // console.log(url)
       dispatch(setRadarData(url));
     }
@@ -69,7 +69,7 @@ const TimeSelect = () => {
     const index = pickOptions.findIndex((obj) => obj == o);
     setTimeIndex(index);
     const date = formatDate(pickedDate).replace('-', '').replace('-', '');
-    const url = `https://localhost:3001/radarData/${date}/${o.value}`;
+    const url = `https://${routerIP}/radarData/${date}/${o.value}`;
     dispatch(setRadarData(url));
   };
 
