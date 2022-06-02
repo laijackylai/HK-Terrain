@@ -32,9 +32,12 @@ const TimeSelect = () => {
     getRadarDataset();
   }, [pickedDate, radarType]);
 
+  // const routerIP = 'localhost:3001'
+  const routerIP = 'rsmcvisual01:8001';
+
   const getRadarDataset = async () => {
     const res = await axios.get(
-      `https://localhost:3001/availableTimeslots/${radarType}/${formatDate(pickedDate)
+      `https://${routerIP}/availableTimeslots/${radarType}/${formatDate(pickedDate)
         .replace('-', '')
         .replace('-', '')}/radar`
     );

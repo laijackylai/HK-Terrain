@@ -15,6 +15,9 @@ import axios from 'axios';
 import geobuf from 'geobuf';
 import Pbf from 'pbf';
 
+// const routerIP = '127.0.0.1:3001'
+const routerIP = 'rsmcvisual01:8001';
+
 const MAPBOX_ACCESS_TOKEN =
   'pk.eyJ1IjoibGFpamFja3lsYWkiLCJhIjoiY2tjZWZucjAzMDd1eDJzcGJvN2tiZHduOSJ9.vWThniHwg9V1wEO3O6xn_g';
 
@@ -197,7 +200,7 @@ function App() {
     if (texture == 'landscape') return landscapeUrl;
     if (texture == 'topo') return topoUrl;
     if (texture == 'source')
-      return `http://127.0.0.1:3001/tiles/png/${props.tile.z}/${props.tile.x}-${props.tile.y}-${props.tile.z}.png`;
+      return `http://${routerIP}/tiles/png/${props.tile.z}/${props.tile.x}-${props.tile.y}-${props.tile.z}.png`;
   };
 
   // useEffect(() => {
@@ -260,7 +263,7 @@ function App() {
             shininess: 100
           },
 
-          elevationData: `https://127.0.0.1:3001/tiles/${props.tile.z}-${props.tile.x}-${props.tile.y}.png`,
+          elevationData: `https://${routerIP}/tiles/${props.tile.z}-${props.tile.x}-${props.tile.y}.png`,
           bounds: [west, south, east, north],
 
           // * text texture switch
@@ -287,7 +290,7 @@ function App() {
             shininess: 100
           },
 
-          elevationData: `https://127.0.0.1:3001/tiles/${props.tile.z}-${props.tile.x}-${props.tile.y}.png`,
+          elevationData: `https://${routerIP}/tiles/${props.tile.z}-${props.tile.x}-${props.tile.y}.png`,
           bounds: [west, south, east, north],
 
           // * text texture switch
@@ -338,7 +341,7 @@ function App() {
 
   const [coastlineData, setCoastlineData] = useState();
   const loadCoastlineData = async () => {
-    const d = await axios.get('https://127.0.0.1:3001/coastline.pbf', {
+    const d = await axios.get(`https://${routerIP}/coastline.pbf`, {
       responseType: 'arraybuffer'
     });
     const data = geobuf.decode(new Pbf(d.data));
